@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>An Introduction to Statistical Learning</title>
+  <meta name="description" content="This is a minimally documented implementation of <em>An Introduction to Statistical Learning</em> using a <code>tidyverse</code> philosophy for all the applications in R.">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="An Introduction to Statistical Learning" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a minimally documented implementation of <em>An Introduction to Statistical Learning</em> using a <code>tidyverse</code> philosophy for all the applications in R." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="An Introduction to Statistical Learning" />
+  
+  <meta name="twitter:description" content="This is a minimally documented implementation of <em>An Introduction to Statistical Learning</em> using a <code>tidyverse</code> philosophy for all the applications in R." />
+  
+
+<meta name="author" content="Benjamin Soltoff">
+
+
+<meta name="date" content="2018-07-23">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="lin-reg.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">(Tidy) ISLR</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>What this is about</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="stat-learn.html"><a href="stat-learn.html"><i class="fa fa-check"></i><b>2</b> What is statistical learning?</a><ul>
+<li class="chapter" data-level="2.1" data-path="stat-learn.html"><a href="stat-learn.html#what-is-statistical-learning"><i class="fa fa-check"></i><b>2.1</b> What is statistical learning?</a></li>
+<li class="chapter" data-level="2.2" data-path="stat-learn.html"><a href="stat-learn.html#assessing-model-accuracy"><i class="fa fa-check"></i><b>2.2</b> Assessing model accuracy</a></li>
+<li class="chapter" data-level="2.3" data-path="stat-learn.html"><a href="stat-learn.html#lab-introduction-to-r"><i class="fa fa-check"></i><b>2.3</b> Lab: Introduction to R</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="stat-learn.html"><a href="stat-learn.html#basic-commands"><i class="fa fa-check"></i><b>2.3.1</b> Basic commands</a></li>
+<li class="chapter" data-level="2.3.2" data-path="stat-learn.html"><a href="stat-learn.html#graphics"><i class="fa fa-check"></i><b>2.3.2</b> Graphics</a></li>
+<li class="chapter" data-level="2.3.3" data-path="stat-learn.html"><a href="stat-learn.html#indexing-data"><i class="fa fa-check"></i><b>2.3.3</b> Indexing data</a></li>
+<li class="chapter" data-level="2.3.4" data-path="stat-learn.html"><a href="stat-learn.html#loading-data"><i class="fa fa-check"></i><b>2.3.4</b> Loading data</a></li>
+<li class="chapter" data-level="2.3.5" data-path="stat-learn.html"><a href="stat-learn.html#additional-graphical-and-numerical-summaries"><i class="fa fa-check"></i><b>2.3.5</b> Additional graphical and numerical summaries</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="stat-learn.html"><a href="stat-learn.html#install-and-load-tidyverse-packages"><i class="fa fa-check"></i><b>2.4</b> Install and load tidyverse packages</a></li>
+<li class="chapter" data-level="2.5" data-path="stat-learn.html"><a href="stat-learn.html#session-information"><i class="fa fa-check"></i><b>2.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="lin-reg.html"><a href="lin-reg.html"><i class="fa fa-check"></i><b>3</b> Linear regression</a><ul>
+<li class="chapter" data-level="3.1" data-path="lin-reg.html"><a href="lin-reg.html#simple-linear-regression"><i class="fa fa-check"></i><b>3.1</b> Simple linear regression</a></li>
+<li class="chapter" data-level="3.2" data-path="lin-reg.html"><a href="lin-reg.html#multiple-linear-regression"><i class="fa fa-check"></i><b>3.2</b> Multiple linear regression</a></li>
+<li class="chapter" data-level="3.3" data-path="lin-reg.html"><a href="lin-reg.html#other-considerations-in-the-regression-model"><i class="fa fa-check"></i><b>3.3</b> Other considerations in the regression model</a></li>
+<li class="chapter" data-level="3.4" data-path="lin-reg.html"><a href="lin-reg.html#the-marketing-plan"><i class="fa fa-check"></i><b>3.4</b> The marketing plan</a></li>
+<li class="chapter" data-level="3.5" data-path="lin-reg.html"><a href="lin-reg.html#comparison-of-linear-regression-with-k-nearest-neighbors"><i class="fa fa-check"></i><b>3.5</b> Comparison of linear regression with <span class="math inline">\(K\)</span>-nearest neighbors</a></li>
+<li class="chapter" data-level="3.6" data-path="lin-reg.html"><a href="lin-reg.html#lab-linear-regression"><i class="fa fa-check"></i><b>3.6</b> Lab: Linear regression</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="lin-reg.html"><a href="lin-reg.html#libraries"><i class="fa fa-check"></i><b>3.6.1</b> Libraries</a></li>
+<li class="chapter" data-level="3.6.2" data-path="lin-reg.html"><a href="lin-reg.html#simple-linear-regression-1"><i class="fa fa-check"></i><b>3.6.2</b> Simple linear regression</a></li>
+<li class="chapter" data-level="3.6.3" data-path="lin-reg.html"><a href="lin-reg.html#multiple-linear-regression-1"><i class="fa fa-check"></i><b>3.6.3</b> Multiple linear regression</a></li>
+<li class="chapter" data-level="3.6.4" data-path="lin-reg.html"><a href="lin-reg.html#interaction-terms"><i class="fa fa-check"></i><b>3.6.4</b> Interaction terms</a></li>
+<li class="chapter" data-level="3.6.5" data-path="lin-reg.html"><a href="lin-reg.html#non-linear-transformations-of-the-predictors"><i class="fa fa-check"></i><b>3.6.5</b> Non-linear transformations of the predictors</a></li>
+<li class="chapter" data-level="3.6.6" data-path="lin-reg.html"><a href="lin-reg.html#qualitative-predictors"><i class="fa fa-check"></i><b>3.6.6</b> Qualitative predictors</a></li>
+<li class="chapter" data-level="3.6.7" data-path="lin-reg.html"><a href="lin-reg.html#writing-functions"><i class="fa fa-check"></i><b>3.6.7</b> Writing functions</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="lin-reg.html"><a href="lin-reg.html#session-information-1"><i class="fa fa-check"></i><b>3.7</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>4</b> Classification</a><ul>
+<li class="chapter" data-level="4.1" data-path="classification.html"><a href="classification.html#an-overview-of-classification"><i class="fa fa-check"></i><b>4.1</b> An overview of classification</a></li>
+<li class="chapter" data-level="4.2" data-path="classification.html"><a href="classification.html#why-not-linear-regression"><i class="fa fa-check"></i><b>4.2</b> Why not linear regression?</a></li>
+<li class="chapter" data-level="4.3" data-path="classification.html"><a href="classification.html#logistic-regression"><i class="fa fa-check"></i><b>4.3</b> Logistic regression</a></li>
+<li class="chapter" data-level="4.4" data-path="classification.html"><a href="classification.html#linear-discriminant-analysis"><i class="fa fa-check"></i><b>4.4</b> Linear discriminant analysis</a></li>
+<li class="chapter" data-level="4.5" data-path="classification.html"><a href="classification.html#a-comparison-of-classification-methods"><i class="fa fa-check"></i><b>4.5</b> A comparison of classification methods</a></li>
+<li class="chapter" data-level="4.6" data-path="classification.html"><a href="classification.html#lab-logistic-regression-lda-qda-and-knn"><i class="fa fa-check"></i><b>4.6</b> Lab: Logistic regression, LDA, QDA, and KNN</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="classification.html"><a href="classification.html#the-stock-market-data"><i class="fa fa-check"></i><b>4.6.1</b> The stock market data</a></li>
+<li class="chapter" data-level="4.6.2" data-path="classification.html"><a href="classification.html#logistic-regression-1"><i class="fa fa-check"></i><b>4.6.2</b> Logistic regression</a></li>
+<li class="chapter" data-level="4.6.3" data-path="classification.html"><a href="classification.html#linear-discriminant-analysis-1"><i class="fa fa-check"></i><b>4.6.3</b> Linear discriminant analysis</a></li>
+<li class="chapter" data-level="4.6.4" data-path="classification.html"><a href="classification.html#quadratic-discriminant-analysis"><i class="fa fa-check"></i><b>4.6.4</b> Quadratic discriminant analysis</a></li>
+<li class="chapter" data-level="4.6.5" data-path="classification.html"><a href="classification.html#k-nearest-neighbors"><i class="fa fa-check"></i><b>4.6.5</b> <span class="math inline">\(K\)</span>-nearest neighbors</a></li>
+<li class="chapter" data-level="4.6.6" data-path="classification.html"><a href="classification.html#an-application-to-caravan-insurance-data"><i class="fa fa-check"></i><b>4.6.6</b> An application to Caravan insurance data</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="classification.html"><a href="classification.html#session-information-2"><i class="fa fa-check"></i><b>4.7</b> Session information</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">An Introduction to Statistical Learning</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="classification" class="section level1">
+<h1><span class="header-section-number">4</span> Classification</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)</code></pre></div>
+<pre><code>## ── Attaching packages ───────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.0.0     ✔ purrr   0.2.5
+## ✔ tibble  1.4.2     ✔ dplyr   0.7.6
+## ✔ tidyr   0.8.1     ✔ stringr 1.3.1
+## ✔ readr   1.1.1     ✔ forcats 0.3.0</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.5.1</code></pre>
+<pre><code>## ── Conflicts ──────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<div id="an-overview-of-classification" class="section level2">
+<h2><span class="header-section-number">4.1</span> An overview of classification</h2>
+</div>
+<div id="why-not-linear-regression" class="section level2">
+<h2><span class="header-section-number">4.2</span> Why not linear regression?</h2>
+</div>
+<div id="logistic-regression" class="section level2">
+<h2><span class="header-section-number">4.3</span> Logistic regression</h2>
+</div>
+<div id="linear-discriminant-analysis" class="section level2">
+<h2><span class="header-section-number">4.4</span> Linear discriminant analysis</h2>
+</div>
+<div id="a-comparison-of-classification-methods" class="section level2">
+<h2><span class="header-section-number">4.5</span> A comparison of classification methods</h2>
+</div>
+<div id="lab-logistic-regression-lda-qda-and-knn" class="section level2">
+<h2><span class="header-section-number">4.6</span> Lab: Logistic regression, LDA, QDA, and KNN</h2>
+<div id="the-stock-market-data" class="section level3">
+<h3><span class="header-section-number">4.6.1</span> The stock market data</h3>
+<p>Load the <code>SMarket</code> data from <code>ISLR</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ISLR)
+
+Smarket &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(Smarket)
+Smarket</code></pre></div>
+<pre><code>## # A tibble: 1,250 x 9
+##    Year   Lag1   Lag2   Lag3   Lag4   Lag5 Volume  Today Direction
+## * &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;fct&gt;    
+## 1  2001  0.381 -0.192 -2.62  -1.06   5.01    1.19  0.959 Up       
+## 2  2001  0.959  0.381 -0.192 -2.62  -1.06    1.30  1.03  Up       
+## 3  2001  1.03   0.959  0.381 -0.192 -2.62    1.41 -0.623 Down     
+## 4  2001 -0.623  1.03   0.959  0.381 -0.192   1.28  0.614 Up       
+## 5  2001  0.614 -0.623  1.03   0.959  0.381   1.21  0.213 Up       
+## 6  2001  0.213  0.614 -0.623  1.03   0.959   1.35  1.39  Up       
+## # ... with 1,244 more rows</code></pre>
+<p>Brief overview of the data using a scatterplot matrix:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(GGally)</code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;GGally&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     nasa</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggpairs</span>(Smarket)</code></pre></div>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="04-classification_files/figure-html/smarket-ggpairs-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>Volume over time:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Smarket <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">id =</span> <span class="kw">row_number</span>()) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> id, <span class="dt">y =</span> Volume)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_smooth</span>()</code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="04-classification_files/figure-html/volume-1.png" width="70%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="logistic-regression-1" class="section level3">
+<h3><span class="header-section-number">4.6.2</span> Logistic regression</h3>
+<p>Logistic regression is a type of <strong>generalized linearmo del</strong> (GLM), a class of models for fitting regression lines to many types of response variables. <code>glm()</code> is the base function in R for estimating these models. The syntax is the same as <code>lm()</code> except we also pass the argument <code>family = binomial</code> to run the logistic regression form of GLM:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">glm_fit &lt;-<span class="st"> </span><span class="kw">glm</span>(Direction <span class="op">~</span><span class="st"> </span>Lag1 <span class="op">+</span><span class="st"> </span>Lag2 <span class="op">+</span><span class="st"> </span>Lag3 <span class="op">+</span><span class="st"> </span>Lag4 <span class="op">+</span><span class="st"> </span>Lag5 <span class="op">+</span><span class="st"> </span>Volume,
+               <span class="dt">data =</span> Smarket,
+               <span class="dt">family =</span> binomial)</code></pre></div>
+<p>We can again use <code>broom</code> to summarize the output of <code>glm()</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(broom)
+
+<span class="kw">tidy</span>(glm_fit)</code></pre></div>
+<pre><code>##          term estimate std.error statistic p.value
+## 1 (Intercept) -0.12600    0.2407    -0.523   0.601
+## 2        Lag1 -0.07307    0.0502    -1.457   0.145
+## 3        Lag2 -0.04230    0.0501    -0.845   0.398
+## 4        Lag3  0.01109    0.0499     0.222   0.824
+## 5        Lag4  0.00936    0.0500     0.187   0.851
+## 6        Lag5  0.01031    0.0495     0.208   0.835
+## 7      Volume  0.13544    0.1584     0.855   0.392</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">glance</span>(glm_fit)</code></pre></div>
+<pre><code>##   null.deviance df.null logLik  AIC  BIC deviance df.residual
+## 1          1731    1249   -864 1742 1778     1728        1243</code></pre>
+<p>To extract predicted probabilities for each observation (that is, in the form <span class="math inline">\(P(Y = 1|X)\)</span>), we use <code>augment()</code> with the argument <code>type.predict = &quot;response&quot;</code>; if we omit that argument, the predicted values are generated in the log-odds form.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">augment</span>(glm_fit, <span class="dt">type.predict =</span> <span class="st">&quot;response&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">as_tibble</span>()</code></pre></div>
+<pre><code>## # A tibble: 1,250 x 14
+##   Direction   Lag1   Lag2   Lag3   Lag4   Lag5 Volume .fitted .se.fit
+##   &lt;fct&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Up         0.381 -0.192 -2.62  -1.06   5.01    1.19   0.507  0.0732
+## 2 Up         0.959  0.381 -0.192 -2.62  -1.06    1.30   0.481  0.0415
+## 3 Down       1.03   0.959  0.381 -0.192 -2.62    1.41   0.481  0.0401
+## 4 Up        -0.623  1.03   0.959  0.381 -0.192   1.28   0.515  0.0253
+## 5 Up         0.614 -0.623  1.03   0.959  0.381   1.21   0.511  0.0275
+## 6 Up         0.213  0.614 -0.623  1.03   0.959   1.35   0.507  0.0255
+## # ... with 1,244 more rows, and 5 more variables: .resid &lt;dbl&gt;,
+## #   .hat &lt;dbl&gt;, .sigma &lt;dbl&gt;, .cooksd &lt;dbl&gt;, .std.resid &lt;dbl&gt;</code></pre>
+<p>To convert these predicted probabilities to actual predictions using a <span class="math inline">\(.5\)</span> threshold, we create a new column using <code>mutate()</code> which checks the <code>.fitted</code> value and returns <code>Up</code> if the probability is greater than or equal to <span class="math inline">\(.5\)</span> and <code>Down</code> if the probability is less than <span class="math inline">\(.5\)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">augment</span>(glm_fit, <span class="dt">type.predict =</span> <span class="st">&quot;response&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">.predict =</span> <span class="kw">ifelse</span>(.fitted <span class="op">&gt;=</span><span class="st"> </span>.<span class="dv">5</span>, <span class="st">&quot;Up&quot;</span>, <span class="st">&quot;Down&quot;</span>))</code></pre></div>
+<pre><code>## # A tibble: 1,250 x 15
+##   Direction   Lag1   Lag2   Lag3   Lag4   Lag5 Volume .fitted .se.fit
+##   &lt;fct&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Up         0.381 -0.192 -2.62  -1.06   5.01    1.19   0.507  0.0732
+## 2 Up         0.959  0.381 -0.192 -2.62  -1.06    1.30   0.481  0.0415
+## 3 Down       1.03   0.959  0.381 -0.192 -2.62    1.41   0.481  0.0401
+## 4 Up        -0.623  1.03   0.959  0.381 -0.192   1.28   0.515  0.0253
+## 5 Up         0.614 -0.623  1.03   0.959  0.381   1.21   0.511  0.0275
+## 6 Up         0.213  0.614 -0.623  1.03   0.959   1.35   0.507  0.0255
+## # ... with 1,244 more rows, and 6 more variables: .resid &lt;dbl&gt;,
+## #   .hat &lt;dbl&gt;, .sigma &lt;dbl&gt;, .cooksd &lt;dbl&gt;, .std.resid &lt;dbl&gt;,
+## #   .predict &lt;chr&gt;</code></pre>
+<p>We can create a confusion matrix by first counting the number Up/Down, Up/Up, Down/Up, and Down/Down pairs of actual and predicted outcomes, then using <code>spread()</code> from <code>tidyr</code> to cast the data frame into a wide format.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">augment</span>(glm_fit, <span class="dt">type.predict =</span> <span class="st">&quot;response&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">.predict =</span> <span class="kw">ifelse</span>(.fitted <span class="op">&gt;=</span><span class="st"> </span>.<span class="dv">5</span>, <span class="st">&quot;Up&quot;</span>, <span class="st">&quot;Down&quot;</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">count</span>(Direction, .predict) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">spread</span>(Direction, n)</code></pre></div>
+<pre><code>## # A tibble: 2 x 3
+##   .predict  Down    Up
+##   &lt;chr&gt;    &lt;int&gt; &lt;int&gt;
+## 1 Down       145   141
+## 2 Up         457   507</code></pre>
+<p>Alternatively (and I think a bit more easily), the ISLR solution based on <code>table()</code> also works reasonably well:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">augment</span>(glm_fit, <span class="dt">type.predict =</span> <span class="st">&quot;response&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">.predict =</span> <span class="kw">ifelse</span>(.fitted <span class="op">&gt;=</span><span class="st"> </span>.<span class="dv">5</span>, <span class="st">&quot;Up&quot;</span>, <span class="st">&quot;Down&quot;</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">with</span>(<span class="kw">table</span>(.predict, Direction))</code></pre></div>
+<pre><code>##         Direction
+## .predict Down  Up
+##     Down  145 141
+##     Up    457 507</code></pre>
+<p><code>with()</code> allows us to directly refer to the column names without any additional notation. To calculate the predictive accuracy of the model, use <code>mean()</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">augment</span>(glm_fit, <span class="dt">type.predict =</span> <span class="st">&quot;response&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">.predict =</span> <span class="kw">ifelse</span>(.fitted <span class="op">&gt;=</span><span class="st"> </span>.<span class="dv">5</span>, <span class="st">&quot;Up&quot;</span>, <span class="st">&quot;Down&quot;</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">with</span>(<span class="kw">mean</span>(Direction <span class="op">!=</span><span class="st"> </span>.predict))</code></pre></div>
+<pre><code>## [1] 0.478</code></pre>
+<p>This is the <strong>training error rate</strong> (portion of observations where the actual outcome does not match the predicted outcome). To calculate the <strong>test error rate</strong>, we hold back a portion of the data to evaluate the model’s effectiveness. Let’s split the data into years 2001-04 and 2005:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Smarket_<span class="dv">0104</span> &lt;-<span class="st"> </span><span class="kw">filter</span>(Smarket, Year <span class="op">&lt;</span><span class="st"> </span><span class="dv">2005</span>)
+Smarket_<span class="dv">05</span> &lt;-<span class="st"> </span><span class="kw">filter</span>(Smarket, Year <span class="op">==</span><span class="st"> </span><span class="dv">2005</span>)
+Smarket_<span class="dv">0104</span></code></pre></div>
+<pre><code>## # A tibble: 998 x 9
+##    Year   Lag1   Lag2   Lag3   Lag4   Lag5 Volume  Today Direction
+##   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;fct&gt;    
+## 1  2001  0.381 -0.192 -2.62  -1.06   5.01    1.19  0.959 Up       
+## 2  2001  0.959  0.381 -0.192 -2.62  -1.06    1.30  1.03  Up       
+## 3  2001  1.03   0.959  0.381 -0.192 -2.62    1.41 -0.623 Down     
+## 4  2001 -0.623  1.03   0.959  0.381 -0.192   1.28  0.614 Up       
+## 5  2001  0.614 -0.623  1.03   0.959  0.381   1.21  0.213 Up       
+## 6  2001  0.213  0.614 -0.623  1.03   0.959   1.35  1.39  Up       
+## # ... with 992 more rows</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Smarket_<span class="dv">05</span></code></pre></div>
+<pre><code>## # A tibble: 252 x 9
+##    Year   Lag1   Lag2   Lag3   Lag4   Lag5 Volume  Today Direction
+##   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;fct&gt;    
+## 1  2005 -0.134  0.008 -0.007  0.715 -0.431  0.787 -0.812 Down     
+## 2  2005 -0.812 -0.134  0.008 -0.007  0.715  1.51  -1.17  Down     
+## 3  2005 -1.17  -0.812 -0.134  0.008 -0.007  1.72  -0.363 Down     
+## 4  2005 -0.363 -1.17  -0.812 -0.134  0.008  1.74   0.351 Up       
+## 5  2005  0.351 -0.363 -1.17  -0.812 -0.134  1.57  -0.143 Down     
+## 6  2005 -0.143  0.351 -0.363 -1.17  -0.812  1.48   0.342 Up       
+## # ... with 246 more rows</code></pre>
+<p>Let’s now train the model using the 2001-04 data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">glm_fit &lt;-<span class="st"> </span><span class="kw">glm</span>(Direction <span class="op">~</span><span class="st"> </span>Lag1 <span class="op">+</span><span class="st"> </span>Lag2 <span class="op">+</span><span class="st"> </span>Lag3 <span class="op">+</span><span class="st"> </span>Lag4 <span class="op">+</span><span class="st"> </span>Lag5 <span class="op">+</span><span class="st"> </span>Volume,
+               <span class="dt">data =</span> Smarket_<span class="dv">0104</span>,
+               <span class="dt">family =</span> binomial)</code></pre></div>
+<p>And evaluate it using the 2005 data. The difference from before is we specify <code>newdata = Smarket_05</code> to tell <code>augment()</code> to generate predicted values for the held-out 2005:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">augment</span>(glm_fit, <span class="dt">newdata =</span> Smarket_<span class="dv">05</span>, <span class="dt">type.predict =</span> <span class="st">&quot;response&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">.predict =</span> <span class="kw">ifelse</span>(.fitted <span class="op">&gt;=</span><span class="st"> </span>.<span class="dv">5</span>, <span class="st">&quot;Up&quot;</span>, <span class="st">&quot;Down&quot;</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">with</span>(<span class="kw">mean</span>(Direction <span class="op">!=</span><span class="st"> </span>.predict))</code></pre></div>
+<pre><code>## [1] 0.52</code></pre>
+</div>
+<div id="linear-discriminant-analysis-1" class="section level3">
+<h3><span class="header-section-number">4.6.3</span> Linear discriminant analysis</h3>
+<p>No <code>broom</code> implementation. Need to figure out how to proceed.</p>
+</div>
+<div id="quadratic-discriminant-analysis" class="section level3">
+<h3><span class="header-section-number">4.6.4</span> Quadratic discriminant analysis</h3>
+<p>No <code>broom</code> implementation. Need to figure out how to proceed.</p>
+</div>
+<div id="k-nearest-neighbors" class="section level3">
+<h3><span class="header-section-number">4.6.5</span> <span class="math inline">\(K\)</span>-nearest neighbors</h3>
+<p>Perform KNN using the <code>knn()</code> function in the <code>class</code> package. Unlike the past functions, we need to explicitly separate the predictors from the response variables. <code>knn()</code> requires four arguments:</p>
+<ol style="list-style-type: decimal">
+<li><code>train</code> - a data frame containing the predictors for the training data</li>
+<li><code>test</code> - a data frame containing the predictors for the test data</li>
+<li><code>cl</code> - a vector containing the class labels (i.e. outcomes) for the training observations</li>
+<li><code>k</code> - the number of nearest neighbors to be used by the classifier</li>
+</ol>
+<p>We use <code>select()</code> to create the appropriate data frames for 1 and 2.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Smarket_0104_x &lt;-<span class="st"> </span><span class="kw">select</span>(Smarket_<span class="dv">0104</span>, <span class="op">-</span>Direction)
+Smarket_05_x &lt;-<span class="st"> </span><span class="kw">select</span>(Smarket_<span class="dv">05</span>, <span class="op">-</span>Direction)</code></pre></div>
+<p>Then we pass these data frames to <code>knn()</code>. To ensure reproducibility, we set the random seed before applying this function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">1234</span>)
+
+<span class="kw">library</span>(class)
+knn_pred &lt;-<span class="st"> </span><span class="kw">knn</span>(<span class="dt">train =</span> Smarket_0104_x,
+                <span class="dt">test =</span> Smarket_05_x,
+                <span class="dt">cl =</span> Smarket_<span class="dv">0104</span><span class="op">$</span>Direction,
+                <span class="dt">k =</span> <span class="dv">1</span>)
+knn_pred</code></pre></div>
+<pre><code>##   [1] Down Down Down Up   Up   Down Down Up   Down Up   Up   Down Down Down
+##  [15] Up   Down Up   Up   Up   Up   Up   Up   Down Up   Down Up   Down Up  
+##  [29] Up   Down Up   Up   Down Up   Down Up   Up   Up   Down Up   Down Up  
+##  [43] Up   Up   Down Down Down Down Up   Up   Down Up   Down Down Down Up  
+##  [57] Up   Up   Down Up   Down Up   Up   Up   Up   Up   Down Down Up   Down
+##  [71] Down Down Up   Up   Down Up   Down Up   Down Up   Down Up   Up   Down
+##  [85] Up   Up   Down Up   Down Up   Down Down Up   Up   Up   Up   Down Up  
+##  [99] Up   Up   Up   Up   Down Up   Down Down Up   Down Down Up   Down Up  
+## [113] Up   Up   Up   Up   Down Down Down Down Down Down Up   Up   Up   Down
+## [127] Up   Down Up   Up   Up   Up   Up   Up   Up   Down Up   Up   Down Up  
+## [141] Down Up   Up   Up   Down Down Up   Down Down Down Down Up   Up   Up  
+## [155] Down Down Down Down Up   Up   Up   Down Down Down Down Up   Up   Up  
+## [169] Down Down Up   Up   Down Up   Down Down Up   Down Up   Down Down Down
+## [183] Up   Up   Down Up   Down Up   Down Down Down Down Down Up   Down Up  
+## [197] Down Down Up   Up   Down Up   Down Down Up   Down Down Down Up   Up  
+## [211] Up   Up   Up   Up   Down Down Up   Up   Up   Up   Down Up   Up   Up  
+## [225] Up   Up   Up   Down Down Up   Down Up   Up   Down Up   Down Up   Up  
+## [239] Up   Up   Up   Down Down Down Up   Down Up   Up   Down Up   Down Down
+## Levels: Down Up</code></pre>
+<p>The output is a vector containing the predicted outcomes for the test data. We can generate the confusion matrix and the test error rate:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(knn_pred, Smarket_<span class="dv">05</span><span class="op">$</span>Direction)</code></pre></div>
+<pre><code>##         
+## knn_pred Down  Up
+##     Down   92  22
+##     Up     19 119</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data_frame</span>(
+  <span class="dt">actual =</span> Smarket_<span class="dv">05</span><span class="op">$</span>Direction,
+  <span class="dt">predict =</span> knn_pred
+)  <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">with</span>(<span class="kw">mean</span>(actual <span class="op">!=</span><span class="st"> </span>predict))</code></pre></div>
+<pre><code>## [1] 0.163</code></pre>
+<p>Repeat with <span class="math inline">\(K=3\)</span> and compare performance:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knn_pred &lt;-<span class="st"> </span><span class="kw">knn</span>(<span class="dt">train =</span> Smarket_0104_x,
+                <span class="dt">test =</span> Smarket_05_x,
+                <span class="dt">cl =</span> Smarket_<span class="dv">0104</span><span class="op">$</span>Direction,
+                <span class="dt">k =</span> <span class="dv">3</span>)
+
+<span class="kw">table</span>(knn_pred, Smarket_<span class="dv">05</span><span class="op">$</span>Direction)</code></pre></div>
+<pre><code>##         
+## knn_pred Down  Up
+##     Down   92  21
+##     Up     19 120</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data_frame</span>(
+  <span class="dt">actual =</span> Smarket_<span class="dv">05</span><span class="op">$</span>Direction,
+  <span class="dt">predict =</span> knn_pred
+)  <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">with</span>(<span class="kw">mean</span>(actual <span class="op">!=</span><span class="st"> </span>predict))</code></pre></div>
+<pre><code>## [1] 0.159</code></pre>
+</div>
+<div id="an-application-to-caravan-insurance-data" class="section level3">
+<h3><span class="header-section-number">4.6.6</span> An application to Caravan insurance data</h3>
+<p>Let’s apply KNN to the <code>Caravan</code> data set from <code>ISLR</code>. The response variable is <code>Purchase</code> which indicates whether or not a given individual purchases a caravan insurance policy.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Caravan &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(Caravan)
+Caravan</code></pre></div>
+<pre><code>## # A tibble: 5,822 x 86
+##   MOSTYPE MAANTHUI MGEMOMV MGEMLEEF MOSHOOFD MGODRK MGODPR MGODOV MGODGE
+## *   &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1      33        1       3        2        8      0      5      1      3
+## 2      37        1       2        2        8      1      4      1      4
+## 3      37        1       2        2        8      0      4      2      4
+## 4       9        1       3        3        3      2      3      2      4
+## 5      40        1       4        2       10      1      4      1      4
+## 6      23        1       2        1        5      0      5      0      5
+## # ... with 5,816 more rows, and 77 more variables: MRELGE &lt;dbl&gt;,
+## #   MRELSA &lt;dbl&gt;, MRELOV &lt;dbl&gt;, MFALLEEN &lt;dbl&gt;, MFGEKIND &lt;dbl&gt;,
+## #   MFWEKIND &lt;dbl&gt;, MOPLHOOG &lt;dbl&gt;, MOPLMIDD &lt;dbl&gt;, MOPLLAAG &lt;dbl&gt;,
+## #   MBERHOOG &lt;dbl&gt;, MBERZELF &lt;dbl&gt;, MBERBOER &lt;dbl&gt;, MBERMIDD &lt;dbl&gt;,
+## #   MBERARBG &lt;dbl&gt;, MBERARBO &lt;dbl&gt;, MSKA &lt;dbl&gt;, MSKB1 &lt;dbl&gt;, MSKB2 &lt;dbl&gt;,
+## #   MSKC &lt;dbl&gt;, MSKD &lt;dbl&gt;, MHHUUR &lt;dbl&gt;, MHKOOP &lt;dbl&gt;, MAUT1 &lt;dbl&gt;,
+## #   MAUT2 &lt;dbl&gt;, MAUT0 &lt;dbl&gt;, MZFONDS &lt;dbl&gt;, MZPART &lt;dbl&gt;, MINKM30 &lt;dbl&gt;,
+## #   MINK3045 &lt;dbl&gt;, MINK4575 &lt;dbl&gt;, MINK7512 &lt;dbl&gt;, MINK123M &lt;dbl&gt;,
+## #   MINKGEM &lt;dbl&gt;, MKOOPKLA &lt;dbl&gt;, PWAPART &lt;dbl&gt;, PWABEDR &lt;dbl&gt;,
+## #   PWALAND &lt;dbl&gt;, PPERSAUT &lt;dbl&gt;, PBESAUT &lt;dbl&gt;, PMOTSCO &lt;dbl&gt;,
+## #   PVRAAUT &lt;dbl&gt;, PAANHANG &lt;dbl&gt;, PTRACTOR &lt;dbl&gt;, PWERKT &lt;dbl&gt;,
+## #   PBROM &lt;dbl&gt;, PLEVEN &lt;dbl&gt;, PPERSONG &lt;dbl&gt;, PGEZONG &lt;dbl&gt;,
+## #   PWAOREG &lt;dbl&gt;, PBRAND &lt;dbl&gt;, PZEILPL &lt;dbl&gt;, PPLEZIER &lt;dbl&gt;,
+## #   PFIETS &lt;dbl&gt;, PINBOED &lt;dbl&gt;, PBYSTAND &lt;dbl&gt;, AWAPART &lt;dbl&gt;,
+## #   AWABEDR &lt;dbl&gt;, AWALAND &lt;dbl&gt;, APERSAUT &lt;dbl&gt;, ABESAUT &lt;dbl&gt;,
+## #   AMOTSCO &lt;dbl&gt;, AVRAAUT &lt;dbl&gt;, AAANHANG &lt;dbl&gt;, ATRACTOR &lt;dbl&gt;,
+## #   AWERKT &lt;dbl&gt;, ABROM &lt;dbl&gt;, ALEVEN &lt;dbl&gt;, APERSONG &lt;dbl&gt;,
+## #   AGEZONG &lt;dbl&gt;, AWAOREG &lt;dbl&gt;, ABRAND &lt;dbl&gt;, AZEILPL &lt;dbl&gt;,
+## #   APLEZIER &lt;dbl&gt;, AFIETS &lt;dbl&gt;, AINBOED &lt;dbl&gt;, ABYSTAND &lt;dbl&gt;,
+## #   Purchase &lt;fct&gt;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Caravan <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">count</span>(Purchase) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pct =</span> n <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(n))</code></pre></div>
+<pre><code>## # A tibble: 2 x 3
+##   Purchase     n    pct
+##   &lt;fct&gt;    &lt;int&gt;  &lt;dbl&gt;
+## 1 No        5474 0.940 
+## 2 Yes        348 0.0598</code></pre>
+<p>Only approximately 6% of individuals in the dataset purchased a caravan insurance policy.</p>
+<p>To perform KNN, first we standardize the data set using the <code>scale()</code> function. <code>scale()</code> normalizes any vector/variable to mean 0 and standard deviation 1. To apply this standardization to each column in <code>Caravan</code> (except for the <code>Purchase</code> column), we use <code>mutate_at()</code> to apply the same mutation function to multiple columns.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Caravan_scale &lt;-<span class="st"> </span>Caravan <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="op">-</span>Purchase), <span class="dt">.funs =</span> <span class="kw">funs</span>(<span class="kw">scale</span>(.) <span class="op">%&gt;%</span><span class="st"> </span>as.vector))
+
+<span class="co"># confirm the transformation worked</span>
+Caravan_scale <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarize_at</span>(<span class="dt">.vars =</span> <span class="kw">vars</span>(<span class="op">-</span>Purchase), <span class="dt">.funs =</span> <span class="kw">funs</span>(mean, sd)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">glimpse</span>()</code></pre></div>
+<pre><code>## Observations: 1
+## Variables: 170
+## $ MOSTYPE_mean  &lt;dbl&gt; -7.03e-17
+## $ MAANTHUI_mean &lt;dbl&gt; -1.47e-16
+## $ MGEMOMV_mean  &lt;dbl&gt; -1.78e-16
+## $ MGEMLEEF_mean &lt;dbl&gt; 2.04e-16
+## $ MOSHOOFD_mean &lt;dbl&gt; -1.46e-17
+## $ MGODRK_mean   &lt;dbl&gt; -4.68e-17
+## $ MGODPR_mean   &lt;dbl&gt; 7.08e-17
+## $ MGODOV_mean   &lt;dbl&gt; 1.08e-17
+## $ MGODGE_mean   &lt;dbl&gt; 9.04e-17
+## $ MRELGE_mean   &lt;dbl&gt; -1.35e-16
+## $ MRELSA_mean   &lt;dbl&gt; -1.44e-17
+## $ MRELOV_mean   &lt;dbl&gt; -1.2e-16
+## $ MFALLEEN_mean &lt;dbl&gt; -1.13e-18
+## $ MFGEKIND_mean &lt;dbl&gt; 4.74e-17
+## $ MFWEKIND_mean &lt;dbl&gt; -6.68e-17
+## $ MOPLHOOG_mean &lt;dbl&gt; -4.63e-17
+## $ MOPLMIDD_mean &lt;dbl&gt; 1.07e-16
+## $ MOPLLAAG_mean &lt;dbl&gt; 4.04e-17
+## $ MBERHOOG_mean &lt;dbl&gt; -2.21e-17
+## $ MBERZELF_mean &lt;dbl&gt; 1.14e-17
+## $ MBERBOER_mean &lt;dbl&gt; -3.95e-17
+## $ MBERMIDD_mean &lt;dbl&gt; -1.71e-17
+## $ MBERARBG_mean &lt;dbl&gt; 1.16e-16
+## $ MBERARBO_mean &lt;dbl&gt; -1.03e-16
+## $ MSKA_mean     &lt;dbl&gt; -6.42e-17
+## $ MSKB1_mean    &lt;dbl&gt; 5.22e-17
+## $ MSKB2_mean    &lt;dbl&gt; -3.22e-18
+## $ MSKC_mean     &lt;dbl&gt; 3.38e-17
+## $ MSKD_mean     &lt;dbl&gt; 1.03e-16
+## $ MHHUUR_mean   &lt;dbl&gt; 1.08e-17
+## $ MHKOOP_mean   &lt;dbl&gt; -3.33e-17
+## $ MAUT1_mean    &lt;dbl&gt; -2.71e-16
+## $ MAUT2_mean    &lt;dbl&gt; 1.02e-16
+## $ MAUT0_mean    &lt;dbl&gt; 1.76e-17
+## $ MZFONDS_mean  &lt;dbl&gt; 4.33e-17
+## $ MZPART_mean   &lt;dbl&gt; -3.26e-17
+## $ MINKM30_mean  &lt;dbl&gt; -8.52e-17
+## $ MINK3045_mean &lt;dbl&gt; 4.2e-17
+## $ MINK4575_mean &lt;dbl&gt; -3.71e-17
+## $ MINK7512_mean &lt;dbl&gt; -2.19e-17
+## $ MINK123M_mean &lt;dbl&gt; -2.4e-17
+## $ MINKGEM_mean  &lt;dbl&gt; 1.6e-16
+## $ MKOOPKLA_mean &lt;dbl&gt; -1.85e-16
+## $ PWAPART_mean  &lt;dbl&gt; -3.31e-17
+## $ PWABEDR_mean  &lt;dbl&gt; -2.36e-18
+## $ PWALAND_mean  &lt;dbl&gt; -2.25e-17
+## $ PPERSAUT_mean &lt;dbl&gt; -1.57e-17
+## $ PBESAUT_mean  &lt;dbl&gt; 2.32e-18
+## $ PMOTSCO_mean  &lt;dbl&gt; -1.64e-18
+## $ PVRAAUT_mean  &lt;dbl&gt; 5.54e-18
+## $ PAANHANG_mean &lt;dbl&gt; 5.31e-18
+## $ PTRACTOR_mean &lt;dbl&gt; 2.94e-17
+## $ PWERKT_mean   &lt;dbl&gt; -4.79e-18
+## $ PBROM_mean    &lt;dbl&gt; 2.24e-17
+## $ PLEVEN_mean   &lt;dbl&gt; -1.39e-18
+## $ PPERSONG_mean &lt;dbl&gt; -7.14e-19
+## $ PGEZONG_mean  &lt;dbl&gt; -4.44e-18
+## $ PWAOREG_mean  &lt;dbl&gt; -4.16e-18
+## $ PBRAND_mean   &lt;dbl&gt; 3.03e-17
+## $ PZEILPL_mean  &lt;dbl&gt; 3.52e-19
+## $ PPLEZIER_mean &lt;dbl&gt; 1.48e-18
+## $ PFIETS_mean   &lt;dbl&gt; 2.25e-17
+## $ PINBOED_mean  &lt;dbl&gt; -1.32e-18
+## $ PBYSTAND_mean &lt;dbl&gt; -1.42e-17
+## $ AWAPART_mean  &lt;dbl&gt; -3.76e-17
+## $ AWABEDR_mean  &lt;dbl&gt; -8.27e-18
+## $ AWALAND_mean  &lt;dbl&gt; 1.18e-17
+## $ APERSAUT_mean &lt;dbl&gt; 2.61e-17
+## $ ABESAUT_mean  &lt;dbl&gt; -4.78e-18
+## $ AMOTSCO_mean  &lt;dbl&gt; 2.48e-17
+## $ AVRAAUT_mean  &lt;dbl&gt; 5.18e-18
+## $ AAANHANG_mean &lt;dbl&gt; 4.88e-18
+## $ ATRACTOR_mean &lt;dbl&gt; -9.36e-18
+## $ AWERKT_mean   &lt;dbl&gt; -2.05e-18
+## $ ABROM_mean    &lt;dbl&gt; 9.16e-18
+## $ ALEVEN_mean   &lt;dbl&gt; -9.64e-18
+## $ APERSONG_mean &lt;dbl&gt; 7.86e-18
+## $ AGEZONG_mean  &lt;dbl&gt; 1.1e-18
+## $ AWAOREG_mean  &lt;dbl&gt; 2.2e-18
+## $ ABRAND_mean   &lt;dbl&gt; -4.89e-17
+## $ AZEILPL_mean  &lt;dbl&gt; 2.85e-18
+## $ APLEZIER_mean &lt;dbl&gt; -1.06e-18
+## $ AFIETS_mean   &lt;dbl&gt; 7.78e-18
+## $ AINBOED_mean  &lt;dbl&gt; 6.96e-18
+## $ ABYSTAND_mean &lt;dbl&gt; -9.91e-18
+## $ MOSTYPE_sd    &lt;dbl&gt; 1
+## $ MAANTHUI_sd   &lt;dbl&gt; 1
+## $ MGEMOMV_sd    &lt;dbl&gt; 1
+## $ MGEMLEEF_sd   &lt;dbl&gt; 1
+## $ MOSHOOFD_sd   &lt;dbl&gt; 1
+## $ MGODRK_sd     &lt;dbl&gt; 1
+## $ MGODPR_sd     &lt;dbl&gt; 1
+## $ MGODOV_sd     &lt;dbl&gt; 1
+## $ MGODGE_sd     &lt;dbl&gt; 1
+## $ MRELGE_sd     &lt;dbl&gt; 1
+## $ MRELSA_sd     &lt;dbl&gt; 1
+## $ MRELOV_sd     &lt;dbl&gt; 1
+## $ MFALLEEN_sd   &lt;dbl&gt; 1
+## $ MFGEKIND_sd   &lt;dbl&gt; 1
+## $ MFWEKIND_sd   &lt;dbl&gt; 1
+## $ MOPLHOOG_sd   &lt;dbl&gt; 1
+## $ MOPLMIDD_sd   &lt;dbl&gt; 1
+## $ MOPLLAAG_sd   &lt;dbl&gt; 1
+## $ MBERHOOG_sd   &lt;dbl&gt; 1
+## $ MBERZELF_sd   &lt;dbl&gt; 1
+## $ MBERBOER_sd   &lt;dbl&gt; 1
+## $ MBERMIDD_sd   &lt;dbl&gt; 1
+## $ MBERARBG_sd   &lt;dbl&gt; 1
+## $ MBERARBO_sd   &lt;dbl&gt; 1
+## $ MSKA_sd       &lt;dbl&gt; 1
+## $ MSKB1_sd      &lt;dbl&gt; 1
+## $ MSKB2_sd      &lt;dbl&gt; 1
+## $ MSKC_sd       &lt;dbl&gt; 1
+## $ MSKD_sd       &lt;dbl&gt; 1
+## $ MHHUUR_sd     &lt;dbl&gt; 1
+## $ MHKOOP_sd     &lt;dbl&gt; 1
+## $ MAUT1_sd      &lt;dbl&gt; 1
+## $ MAUT2_sd      &lt;dbl&gt; 1
+## $ MAUT0_sd      &lt;dbl&gt; 1
+## $ MZFONDS_sd    &lt;dbl&gt; 1
+## $ MZPART_sd     &lt;dbl&gt; 1
+## $ MINKM30_sd    &lt;dbl&gt; 1
+## $ MINK3045_sd   &lt;dbl&gt; 1
+## $ MINK4575_sd   &lt;dbl&gt; 1
+## $ MINK7512_sd   &lt;dbl&gt; 1
+## $ MINK123M_sd   &lt;dbl&gt; 1
+## $ MINKGEM_sd    &lt;dbl&gt; 1
+## $ MKOOPKLA_sd   &lt;dbl&gt; 1
+## $ PWAPART_sd    &lt;dbl&gt; 1
+## $ PWABEDR_sd    &lt;dbl&gt; 1
+## $ PWALAND_sd    &lt;dbl&gt; 1
+## $ PPERSAUT_sd   &lt;dbl&gt; 1
+## $ PBESAUT_sd    &lt;dbl&gt; 1
+## $ PMOTSCO_sd    &lt;dbl&gt; 1
+## $ PVRAAUT_sd    &lt;dbl&gt; 1
+## $ PAANHANG_sd   &lt;dbl&gt; 1
+## $ PTRACTOR_sd   &lt;dbl&gt; 1
+## $ PWERKT_sd     &lt;dbl&gt; 1
+## $ PBROM_sd      &lt;dbl&gt; 1
+## $ PLEVEN_sd     &lt;dbl&gt; 1
+## $ PPERSONG_sd   &lt;dbl&gt; 1
+## $ PGEZONG_sd    &lt;dbl&gt; 1
+## $ PWAOREG_sd    &lt;dbl&gt; 1
+## $ PBRAND_sd     &lt;dbl&gt; 1
+## $ PZEILPL_sd    &lt;dbl&gt; 1
+## $ PPLEZIER_sd   &lt;dbl&gt; 1
+## $ PFIETS_sd     &lt;dbl&gt; 1
+## $ PINBOED_sd    &lt;dbl&gt; 1
+## $ PBYSTAND_sd   &lt;dbl&gt; 1
+## $ AWAPART_sd    &lt;dbl&gt; 1
+## $ AWABEDR_sd    &lt;dbl&gt; 1
+## $ AWALAND_sd    &lt;dbl&gt; 1
+## $ APERSAUT_sd   &lt;dbl&gt; 1
+## $ ABESAUT_sd    &lt;dbl&gt; 1
+## $ AMOTSCO_sd    &lt;dbl&gt; 1
+## $ AVRAAUT_sd    &lt;dbl&gt; 1
+## $ AAANHANG_sd   &lt;dbl&gt; 1
+## $ ATRACTOR_sd   &lt;dbl&gt; 1
+## $ AWERKT_sd     &lt;dbl&gt; 1
+## $ ABROM_sd      &lt;dbl&gt; 1
+## $ ALEVEN_sd     &lt;dbl&gt; 1
+## $ APERSONG_sd   &lt;dbl&gt; 1
+## $ AGEZONG_sd    &lt;dbl&gt; 1
+## $ AWAOREG_sd    &lt;dbl&gt; 1
+## $ ABRAND_sd     &lt;dbl&gt; 1
+## $ AZEILPL_sd    &lt;dbl&gt; 1
+## $ APLEZIER_sd   &lt;dbl&gt; 1
+## $ AFIETS_sd     &lt;dbl&gt; 1
+## $ AINBOED_sd    &lt;dbl&gt; 1
+## $ ABYSTAND_sd   &lt;dbl&gt; 1</code></pre>
+<p>We can now fit the KNN model. First we split the observations into a test set containing the first 1,000 observations, and a training set containing the remaining observations. Then we fit a KNN model using the training data and <span class="math inline">\(K=1\)</span> and evaluate its performance on the test data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Caravan_test &lt;-<span class="st"> </span><span class="kw">slice</span>(Caravan_scale, <span class="dv">1</span><span class="op">:</span><span class="dv">1000</span>)
+Caravan_train &lt;-<span class="st"> </span><span class="kw">slice</span>(Caravan_scale, <span class="dv">1001</span><span class="op">:</span><span class="kw">n</span>())
+
+Caravan_test_x &lt;-<span class="st"> </span><span class="kw">select</span>(Caravan_test, <span class="op">-</span>Purchase)
+Caravan_train_x &lt;-<span class="st"> </span><span class="kw">select</span>(Caravan_train, <span class="op">-</span>Purchase)
+
+<span class="kw">set.seed</span>(<span class="dv">1</span>)
+knn_pred &lt;-<span class="st"> </span><span class="kw">knn</span>(<span class="dt">train =</span> Caravan_train_x,
+                <span class="dt">test =</span> Caravan_test_x,
+                <span class="dt">cl =</span> Caravan_train<span class="op">$</span>Purchase,
+                <span class="dt">k =</span> <span class="dv">1</span>)
+
+<span class="kw">mean</span>(Caravan_test<span class="op">$</span>Purchase <span class="op">!=</span><span class="st"> </span>knn_pred)   <span class="co"># test error rate</span></code></pre></div>
+<pre><code>## [1] 0.118</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(Caravan_test<span class="op">$</span>Purchase <span class="op">!=</span><span class="st"> &quot;No&quot;</span>)   <span class="co"># null baseline</span></code></pre></div>
+<pre><code>## [1] 0.059</code></pre>
+<p>Compared to predicting “No” for each individual, this model performs poorly. If we only look at those predicted to buy insurance, the model actually performs better:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(knn_pred, Caravan_test<span class="op">$</span>Purchase)</code></pre></div>
+<pre><code>##         
+## knn_pred  No Yes
+##      No  873  50
+##      Yes  68   9</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(Caravan_test<span class="op">$</span>Purchase[knn_pred <span class="op">==</span><span class="st"> &quot;Yes&quot;</span>] <span class="op">==</span><span class="st"> </span>knn_pred[knn_pred <span class="op">==</span><span class="st"> &quot;Yes&quot;</span>])</code></pre></div>
+<pre><code>## [1] 0.117</code></pre>
+<p>Among those predicted to purchase insurance, <span class="math inline">\(11.69%\)</span> actually do purchase insurance. This rate improves using <span class="math inline">\(K=3\)</span> and <span class="math inline">\(K=5\)</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knn_pred &lt;-<span class="st"> </span><span class="kw">knn</span>(<span class="dt">train =</span> Caravan_train_x,
+                <span class="dt">test =</span> Caravan_test_x,
+                <span class="dt">cl =</span> Caravan_train<span class="op">$</span>Purchase,
+                <span class="dt">k =</span> <span class="dv">3</span>)
+<span class="kw">mean</span>(Caravan_test<span class="op">$</span>Purchase[knn_pred <span class="op">==</span><span class="st"> &quot;Yes&quot;</span>] <span class="op">==</span><span class="st"> </span>knn_pred[knn_pred <span class="op">==</span><span class="st"> &quot;Yes&quot;</span>])</code></pre></div>
+<pre><code>## [1] 0.192</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knn_pred &lt;-<span class="st"> </span><span class="kw">knn</span>(<span class="dt">train =</span> Caravan_train_x,
+                <span class="dt">test =</span> Caravan_test_x,
+                <span class="dt">cl =</span> Caravan_train<span class="op">$</span>Purchase,
+                <span class="dt">k =</span> <span class="dv">5</span>)
+<span class="kw">mean</span>(Caravan_test<span class="op">$</span>Purchase[knn_pred <span class="op">==</span><span class="st"> &quot;Yes&quot;</span>] <span class="op">==</span><span class="st"> </span>knn_pred[knn_pred <span class="op">==</span><span class="st"> &quot;Yes&quot;</span>])</code></pre></div>
+<pre><code>## [1] 0.267</code></pre>
+<p>We can compare the performance of KNN to a logistic regression model. By relaxing the threshold for predicting purchase of insurance from <span class="math inline">\(0.5\)</span> to <span class="math inline">\(0.25\)</span>, our model’s test error rate improves even more than for the KNN model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">glm_fit &lt;-<span class="st"> </span><span class="kw">glm</span>(Purchase <span class="op">~</span><span class="st"> </span>.,
+               <span class="dt">data =</span> Caravan_train,
+               <span class="dt">family =</span> binomial)</code></pre></div>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">augment</span>(glm_fit, <span class="dt">newdata =</span> Caravan_test, <span class="dt">type.predict =</span> <span class="st">&quot;response&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># generate prediction</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">.predict =</span> <span class="kw">ifelse</span>(.fitted <span class="op">&gt;=</span><span class="st"> </span>.<span class="dv">25</span>, <span class="st">&quot;Yes&quot;</span>, <span class="st">&quot;No&quot;</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># only evaluate individuals predicted to purchase insurance</span>
+<span class="st">  </span><span class="kw">filter</span>(.predict <span class="op">==</span><span class="st"> &quot;Yes&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># calculate accuracy rate for this subset</span>
+<span class="st">  </span><span class="kw">with</span>(<span class="kw">mean</span>(Purchase <span class="op">==</span><span class="st"> </span>.predict))</code></pre></div>
+<pre><code>## [1] 0.333</code></pre>
+</div>
+</div>
+<div id="session-information-2" class="section level2 toc-ignore">
+<h2><span class="header-section-number">4.7</span> Session information</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">session_info</span>()</code></pre></div>
+<pre><code>## Session info -------------------------------------------------------------</code></pre>
+<pre><code>##  setting  value                       
+##  version  R version 3.5.0 (2018-04-23)
+##  system   x86_64, darwin15.6.0        
+##  ui       X11                         
+##  language (EN)                        
+##  collate  en_US.UTF-8                 
+##  tz       America/Chicago             
+##  date     2018-07-23</code></pre>
+<pre><code>## Packages -----------------------------------------------------------------</code></pre>
+<pre><code>##  package      * version date       source        
+##  assertthat     0.2.0   2017-04-11 CRAN (R 3.5.0)
+##  backports      1.1.2   2017-12-13 CRAN (R 3.5.0)
+##  base         * 3.5.0   2018-04-24 local         
+##  bindr          0.1.1   2018-03-13 CRAN (R 3.5.0)
+##  bindrcpp     * 0.2.2   2018-03-29 CRAN (R 3.5.0)
+##  bookdown       0.7     2018-02-18 CRAN (R 3.5.0)
+##  broom        * 0.4.4   2018-03-29 CRAN (R 3.5.0)
+##  cellranger     1.1.0   2016-07-27 CRAN (R 3.5.0)
+##  class        * 7.3-14  2015-08-30 CRAN (R 3.5.0)
+##  cli            1.0.0   2017-11-05 CRAN (R 3.5.0)
+##  codetools      0.2-15  2016-10-05 CRAN (R 3.5.0)
+##  colorspace     1.3-2   2016-12-14 CRAN (R 3.5.0)
+##  compiler       3.5.0   2018-04-24 local         
+##  crayon         1.3.4   2017-09-16 CRAN (R 3.5.0)
+##  datasets     * 3.5.0   2018-04-24 local         
+##  devtools       1.13.5  2018-02-18 CRAN (R 3.5.0)
+##  digest         0.6.15  2018-01-28 CRAN (R 3.5.0)
+##  dplyr        * 0.7.6   2018-06-29 cran (@0.7.6) 
+##  evaluate       0.10.1  2017-06-24 CRAN (R 3.5.0)
+##  forcats      * 0.3.0   2018-02-19 CRAN (R 3.5.0)
+##  foreign        0.8-70  2017-11-28 CRAN (R 3.5.0)
+##  GGally       * 1.4.0   2018-05-17 CRAN (R 3.5.0)
+##  ggplot2      * 3.0.0   2018-07-03 CRAN (R 3.5.0)
+##  glue           1.2.0   2017-10-29 CRAN (R 3.5.0)
+##  graphics     * 3.5.0   2018-04-24 local         
+##  grDevices    * 3.5.0   2018-04-24 local         
+##  grid           3.5.0   2018-04-24 local         
+##  gtable         0.2.0   2016-02-26 CRAN (R 3.5.0)
+##  haven          1.1.1   2018-01-18 CRAN (R 3.5.0)
+##  hms            0.4.2   2018-03-10 CRAN (R 3.5.0)
+##  htmltools      0.3.6   2017-04-28 CRAN (R 3.5.0)
+##  httr           1.3.1   2017-08-20 CRAN (R 3.5.0)
+##  ISLR         * 1.2     2017-10-20 CRAN (R 3.5.0)
+##  jsonlite       1.5     2017-06-01 CRAN (R 3.5.0)
+##  knitr          1.20    2018-02-20 CRAN (R 3.5.0)
+##  labeling       0.3     2014-08-23 CRAN (R 3.5.0)
+##  lattice        0.20-35 2017-03-25 CRAN (R 3.5.0)
+##  lazyeval       0.2.1   2017-10-29 CRAN (R 3.5.0)
+##  lubridate      1.7.4   2018-04-11 CRAN (R 3.5.0)
+##  magrittr       1.5     2014-11-22 CRAN (R 3.5.0)
+##  Matrix         1.2-14  2018-04-13 CRAN (R 3.5.0)
+##  memoise        1.1.0   2017-04-21 CRAN (R 3.5.0)
+##  methods      * 3.5.0   2018-04-24 local         
+##  mgcv           1.8-23  2018-01-21 CRAN (R 3.5.0)
+##  mnormt         1.5-5   2016-10-15 CRAN (R 3.5.0)
+##  modelr         0.1.2   2018-05-11 CRAN (R 3.5.0)
+##  munsell        0.4.3   2016-02-13 CRAN (R 3.5.0)
+##  nlme           3.1-137 2018-04-07 CRAN (R 3.5.0)
+##  parallel       3.5.0   2018-04-24 local         
+##  pillar         1.2.3   2018-05-25 CRAN (R 3.5.0)
+##  pkgconfig      2.0.1   2017-03-21 CRAN (R 3.5.0)
+##  plyr           1.8.4   2016-06-08 CRAN (R 3.5.0)
+##  psych          1.8.4   2018-05-06 CRAN (R 3.5.0)
+##  purrr        * 0.2.5   2018-05-29 CRAN (R 3.5.0)
+##  R6             2.2.2   2017-06-17 CRAN (R 3.5.0)
+##  RColorBrewer   1.1-2   2014-12-07 CRAN (R 3.5.0)
+##  Rcpp           0.12.17 2018-05-18 CRAN (R 3.5.0)
+##  readr        * 1.1.1   2017-05-16 CRAN (R 3.5.0)
+##  readxl         1.1.0   2018-04-20 CRAN (R 3.5.0)
+##  reshape        0.8.7   2017-08-06 CRAN (R 3.5.0)
+##  reshape2       1.4.3   2017-12-11 CRAN (R 3.5.0)
+##  rlang          0.2.1   2018-05-30 CRAN (R 3.5.0)
+##  rmarkdown      1.9     2018-03-01 CRAN (R 3.5.0)
+##  rprojroot      1.3-2   2018-01-03 CRAN (R 3.5.0)
+##  rstudioapi     0.7     2017-09-07 CRAN (R 3.5.0)
+##  rvest          0.3.2   2016-06-17 CRAN (R 3.5.0)
+##  scales         0.5.0   2017-08-24 CRAN (R 3.5.0)
+##  stats        * 3.5.0   2018-04-24 local         
+##  stringi        1.2.2   2018-05-02 CRAN (R 3.5.0)
+##  stringr      * 1.3.1   2018-05-10 CRAN (R 3.5.0)
+##  tibble       * 1.4.2   2018-01-22 CRAN (R 3.5.0)
+##  tidyr        * 0.8.1   2018-05-18 CRAN (R 3.5.0)
+##  tidyselect     0.2.4   2018-02-26 CRAN (R 3.5.0)
+##  tidyverse    * 1.2.1   2017-11-14 CRAN (R 3.5.0)
+##  tools          3.5.0   2018-04-24 local         
+##  utf8           1.1.4   2018-05-24 CRAN (R 3.5.0)
+##  utils        * 3.5.0   2018-04-24 local         
+##  withr          2.1.2   2018-03-15 CRAN (R 3.5.0)
+##  xfun           0.1     2018-01-22 CRAN (R 3.5.0)
+##  xml2           1.2.0   2018-01-24 CRAN (R 3.5.0)
+##  yaml           2.1.19  2018-05-01 CRAN (R 3.5.0)</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="lin-reg.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/uc-cfss/tidy-islr04-classification.Rmd",
+"text": "Edit"
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+},
+"theme": "readable",
+"highlight": "pygments"
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

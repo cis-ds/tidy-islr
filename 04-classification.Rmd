@@ -1,0 +1,296 @@
+# Classification {#classification}
+
+```{r packages}
+library(tidyverse)
+```
+
+## An overview of classification
+
+
+## Why not linear regression?
+
+
+## Logistic regression
+
+
+## Linear discriminant analysis
+
+
+## A comparison of classification methods
+
+
+## Lab: Logistic regression, LDA, QDA, and KNN
+
+
+### The stock market data
+
+Load the `SMarket` data from `ISLR`.
+
+```{r smarket}
+library(ISLR)
+
+Smarket <- as_tibble(Smarket)
+Smarket
+```
+
+Brief overview of the data using a scatterplot matrix:
+
+```{r smarket-ggpairs}
+library(GGally)
+ggpairs(Smarket)
+```
+
+Volume over time:
+
+```{r volume}
+Smarket %>%
+  mutate(id = row_number()) %>%
+  ggplot(mapping = aes(x = id, y = Volume)) +
+  geom_line() +
+  geom_smooth()
+```
+
+### Logistic regression
+
+Logistic regression is a type of **generalized linearmo del** (GLM), a class of models for fitting regression lines to many types of response variables. `glm()` is the base function in R for estimating these models. The syntax is the same as `lm()` except we also pass the argument `family = binomial` to run the logistic regression form of GLM:
+
+```{r smarket-glm}
+glm_fit <- glm(Direction ~ Lag1 + Lag2 + Lag3 + Lag4 + Lag5 + Volume,
+               data = Smarket,
+               family = binomial)
+```
+
+We can again use `broom` to summarize the output of `glm()`:
+
+```{r smarket-broom}
+library(broom)
+
+tidy(glm_fit)
+glance(glm_fit)
+```
+
+To extract predicted probabilities for each observation (that is, in the form $P(Y = 1|X)$), we use `augment()` with the argument `type.predict = "response"`; if we omit that argument, the predicted values are generated in the log-odds form.
+
+```{r smarket-augment}
+augment(glm_fit, type.predict = "response") %>%
+  as_tibble()
+```
+
+To convert these predicted probabilities to actual predictions using a $.5$ threshold, we create a new column using `mutate()` which checks the `.fitted` value and returns `Up` if the probability is greater than or equal to $.5$ and `Down` if the probability is less than $.5$.
+
+```{r smarket-predict}
+augment(glm_fit, type.predict = "response") %>%
+  as_tibble() %>%
+  mutate(.predict = ifelse(.fitted >= .5, "Up", "Down"))
+```
+
+We can create a confusion matrix by first counting the number Up/Down, Up/Up, Down/Up, and Down/Down pairs of actual and predicted outcomes, then using `spread()` from `tidyr` to cast the data frame into a wide format.
+
+```{r smarket-confusion}
+augment(glm_fit, type.predict = "response") %>%
+  as_tibble() %>%
+  mutate(.predict = ifelse(.fitted >= .5, "Up", "Down")) %>%
+  count(Direction, .predict) %>%
+  spread(Direction, n)
+```
+
+Alternatively (and I think a bit more easily), the ISLR solution based on `table()` also works reasonably well:
+
+```{r smarket-confusion-table}
+augment(glm_fit, type.predict = "response") %>%
+  as_tibble() %>%
+  mutate(.predict = ifelse(.fitted >= .5, "Up", "Down")) %>%
+  with(table(.predict, Direction))
+```
+
+`with()` allows us to directly refer to the column names without any additional notation. To calculate the predictive accuracy of the model, use `mean()`:
+
+```{r smarket-mean}
+augment(glm_fit, type.predict = "response") %>%
+  as_tibble() %>%
+  mutate(.predict = ifelse(.fitted >= .5, "Up", "Down")) %>%
+  with(mean(Direction != .predict))
+```
+
+This is the **training error rate** (portion of observations where the actual outcome does not match the predicted outcome). To calculate the **test error rate**, we hold back a portion of the data to evaluate the model's effectiveness. Let's split the data into years 2001-04 and 2005:
+
+```{r smarket-partition}
+Smarket_0104 <- filter(Smarket, Year < 2005)
+Smarket_05 <- filter(Smarket, Year == 2005)
+Smarket_0104
+Smarket_05
+```
+
+Let's now train the model using the 2001-04 data:
+
+```{r smarket-train}
+glm_fit <- glm(Direction ~ Lag1 + Lag2 + Lag3 + Lag4 + Lag5 + Volume,
+               data = Smarket_0104,
+               family = binomial)
+```
+
+And evaluate it using the 2005 data. The difference from before is we specify `newdata = Smarket_05` to tell `augment()` to generate predicted values for the held-out 2005:
+
+```{r smarket-test}
+augment(glm_fit, newdata = Smarket_05, type.predict = "response") %>%
+  as_tibble() %>%
+  mutate(.predict = ifelse(.fitted >= .5, "Up", "Down")) %>%
+  with(mean(Direction != .predict))
+```
+
+### Linear discriminant analysis
+
+No `broom` implementation. Need to figure out how to proceed.
+
+### Quadratic discriminant analysis
+
+No `broom` implementation. Need to figure out how to proceed.
+
+### $K$-nearest neighbors
+
+Perform KNN using the `knn()` function in the `class` package. Unlike the past functions, we need to explicitly separate the predictors from the response variables. `knn()` requires four arguments:
+
+1. `train` - a data frame containing the predictors for the training data
+1. `test` - a data frame containing the predictors for the test data
+1. `cl` - a vector containing the class labels (i.e. outcomes) for the training observations
+1. `k` - the number of nearest neighbors to be used by the classifier
+
+We use `select()` to create the appropriate data frames for 1 and 2.
+
+```{r smarket-knn-split}
+Smarket_0104_x <- select(Smarket_0104, -Direction)
+Smarket_05_x <- select(Smarket_05, -Direction)
+```
+
+Then we pass these data frames to `knn()`. To ensure reproducibility, we set the random seed before applying this function.
+
+```{r smarket-knn-1}
+set.seed(1234)
+
+library(class)
+knn_pred <- knn(train = Smarket_0104_x,
+                test = Smarket_05_x,
+                cl = Smarket_0104$Direction,
+                k = 1)
+knn_pred
+```
+
+The output is a vector containing the predicted outcomes for the test data. We can generate the confusion matrix and the test error rate:
+
+```{r smarket-knn-1-perf}
+table(knn_pred, Smarket_05$Direction)
+
+data_frame(
+  actual = Smarket_05$Direction,
+  predict = knn_pred
+)  %>%
+  with(mean(actual != predict))
+```
+
+Repeat with $K=3$ and compare performance:
+
+```{r smarket-knn-3}
+knn_pred <- knn(train = Smarket_0104_x,
+                test = Smarket_05_x,
+                cl = Smarket_0104$Direction,
+                k = 3)
+
+table(knn_pred, Smarket_05$Direction)
+
+data_frame(
+  actual = Smarket_05$Direction,
+  predict = knn_pred
+)  %>%
+  with(mean(actual != predict))
+```
+
+### An application to Caravan insurance data
+
+Let's apply KNN to the `Caravan` data set from `ISLR`. The response variable is `Purchase` which indicates whether or not a given individual purchases a caravan insurance policy.
+
+```{r caravan}
+Caravan <- as_tibble(Caravan)
+Caravan
+
+Caravan %>%
+  count(Purchase) %>%
+  mutate(pct = n / sum(n))
+```
+
+Only approximately 6% of individuals in the dataset purchased a caravan insurance policy.
+
+To perform KNN, first we standardize the data set using the `scale()` function. `scale()` normalizes any vector/variable to mean 0 and standard deviation 1. To apply this standardization to each column in `Caravan` (except for the `Purchase` column), we use `mutate_at()` to apply the same mutation function to multiple columns.
+
+```{r caravan-scale}
+Caravan_scale <- Caravan %>%
+  mutate_at(.vars = vars(-Purchase), .funs = funs(scale(.) %>% as.vector))
+
+# confirm the transformation worked
+Caravan_scale %>%
+  summarize_at(.vars = vars(-Purchase), .funs = funs(mean, sd)) %>%
+  glimpse()
+```
+
+We can now fit the KNN model. First we split the observations into a test set containing the first 1,000 observations, and a training set containing the remaining observations. Then we fit a KNN model using the training data and $K=1$ and evaluate its performance on the test data.
+
+```{r caravan-knn-1}
+Caravan_test <- slice(Caravan_scale, 1:1000)
+Caravan_train <- slice(Caravan_scale, 1001:n())
+
+Caravan_test_x <- select(Caravan_test, -Purchase)
+Caravan_train_x <- select(Caravan_train, -Purchase)
+
+set.seed(1)
+knn_pred <- knn(train = Caravan_train_x,
+                test = Caravan_test_x,
+                cl = Caravan_train$Purchase,
+                k = 1)
+
+mean(Caravan_test$Purchase != knn_pred)   # test error rate
+mean(Caravan_test$Purchase != "No")   # null baseline
+```
+
+Compared to predicting "No" for each individual, this model performs poorly. If we only look at those predicted to buy insurance, the model actually performs better:
+
+```{r caravan-knn-1-positives}
+table(knn_pred, Caravan_test$Purchase)
+
+mean(Caravan_test$Purchase[knn_pred == "Yes"] == knn_pred[knn_pred == "Yes"])
+```
+
+Among those predicted to purchase insurance, $`r formatC(mean(Caravan_test$Purchase[knn_pred == "Yes"] == knn_pred[knn_pred == "Yes"]) * 100)`%$ actually do purchase insurance. This rate improves using $K=3$ and $K=5$
+
+```{r caravan-knn-3-5}
+knn_pred <- knn(train = Caravan_train_x,
+                test = Caravan_test_x,
+                cl = Caravan_train$Purchase,
+                k = 3)
+mean(Caravan_test$Purchase[knn_pred == "Yes"] == knn_pred[knn_pred == "Yes"])
+
+knn_pred <- knn(train = Caravan_train_x,
+                test = Caravan_test_x,
+                cl = Caravan_train$Purchase,
+                k = 5)
+mean(Caravan_test$Purchase[knn_pred == "Yes"] == knn_pred[knn_pred == "Yes"])
+```
+
+We can compare the performance of KNN to a logistic regression model. By relaxing the threshold for predicting purchase of insurance from $0.5$ to $0.25$, our model's test error rate improves even more than for the KNN model.
+
+```{r caravan-glm}
+glm_fit <- glm(Purchase ~ .,
+               data = Caravan_train,
+               family = binomial)
+
+augment(glm_fit, newdata = Caravan_test, type.predict = "response") %>%
+  as_tibble() %>%
+  # generate prediction
+  mutate(.predict = ifelse(.fitted >= .25, "Yes", "No")) %>%
+  # only evaluate individuals predicted to purchase insurance
+  filter(.predict == "Yes") %>%
+  # calculate accuracy rate for this subset
+  with(mean(Purchase == .predict))
+```
+
+
+```{r child = '_session-info.Rmd'}
+```

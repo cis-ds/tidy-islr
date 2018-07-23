@@ -1,4 +1,4 @@
-set.seed(1014)
+set.seed(1234)
 options(digits = 3)
 
 knitr::opts_chunk$set(
