@@ -72,7 +72,7 @@ augment(lm_fit) %>%
 To visualize the linear regression model, we can use `geom_smooth()`:
 
 ```{r lm-viz}
-ggplot(data = Boston, aes(x = lstat, y = medv)) +
+ggplot(data = Boston, mapping = aes(x = lstat, y = medv)) +
   geom_point() +
   geom_smooth(method = "lm")
 ```
@@ -83,19 +83,19 @@ Visualizing diagnostic plots can also be done using `augment()` and `ggplot()`. 
 
 ```{r lm-augment-viz}
 augment(lm_fit) %>%
-  ggplot(aes(x = .fitted, y = .resid)) +
+  ggplot(mapping = aes(x = .fitted, y = .resid)) +
   geom_point() +
   labs(x = "Fitted value",
        y = "Residual")
 
 augment(lm_fit) %>%
-  ggplot(aes(x = .fitted, y = .std.resid)) +
+  ggplot(mapping = aes(x = .fitted, y = .std.resid)) +
   geom_point() +
   labs(x = "Fitted value",
        y = "Standardized residual")
 
 augment(lm_fit) %>%
-  ggplot(aes(x = .hat)) +
+  ggplot(mapping = aes(x = .hat)) +
   geom_histogram() +
   labs(x = "Hat value")
 ```

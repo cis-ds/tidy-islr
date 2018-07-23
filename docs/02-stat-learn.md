@@ -146,7 +146,7 @@ scatter_data <- tibble(
 library(ggplot2)    # load ggplot2
 
 # generate scatterplot
-ggplot(data = scatter_data, aes(x = x, y = y)) +
+ggplot(data = scatter_data, mapping = aes(x = x, y = y)) +
   geom_point()
 ```
 
@@ -156,7 +156,7 @@ ggplot(data = scatter_data, aes(x = x, y = y)) +
 
 
 ```r
-ggplot(data = scatter_data, aes(x = x, y = y)) +
+ggplot(data = scatter_data, mapping = aes(x = x, y = y)) +
   geom_point() +
   labs(title = "This is a plot of X vs Y",
        x = "This is the x-axis",
@@ -168,7 +168,7 @@ ggplot(data = scatter_data, aes(x = x, y = y)) +
 To export `ggplot()` objects, use `ggsave()`:
 
 ```r
-x <- ggplot(data = scatter_data, aes(x = x, y = y)) +
+x <- ggplot(data = scatter_data, mapping = aes(x = x, y = y)) +
   geom_point() +
   labs(title = "This is a plot of X vs Y",
        x = "This is the x-axis",
@@ -345,7 +345,7 @@ Variable names are passed to `ggplot()` using the `aes()` function.
 
 
 ```r
-ggplot(data = Auto, aes(x = cylinders, y = mpg)) +
+ggplot(data = Auto, mapping = aes(x = cylinders, y = mpg)) +
   geom_point()
 ```
 
@@ -375,7 +375,7 @@ Auto
 ```
 
 ```r
-ggplot(data = Auto, aes(x = cylinders, y = mpg)) +
+ggplot(data = Auto, mapping = aes(x = cylinders, y = mpg)) +
   geom_boxplot()
 ```
 
@@ -385,10 +385,10 @@ The visual appearance of the boxplot can be customized using either additional a
 
 
 ```r
-ggplot(data = Auto, aes(x = cylinders, y = mpg)) +
+ggplot(data = Auto, mapping = aes(x = cylinders, y = mpg)) +
   geom_boxplot(color = "red")
 
-ggplot(data = Auto, aes(x = cylinders, y = mpg)) +
+ggplot(data = Auto, mapping = aes(x = cylinders, y = mpg)) +
   geom_boxplot(color = "red") +
   labs(x = "Number of cylinders",
        y = "MPG")
@@ -512,39 +512,83 @@ devtools::session_info()
 ```
 
 ```
-##  package   * version date       source        
-##  backports   1.1.2   2017-12-13 CRAN (R 3.5.0)
-##  base      * 3.5.0   2018-04-24 local         
-##  bookdown    0.7     2018-02-18 CRAN (R 3.5.0)
-##  compiler    3.5.0   2018-04-24 local         
-##  datasets  * 3.5.0   2018-04-24 local         
-##  devtools    1.13.5  2018-02-18 CRAN (R 3.5.0)
-##  digest      0.6.15  2018-01-28 CRAN (R 3.5.0)
-##  evaluate    0.10.1  2017-06-24 CRAN (R 3.5.0)
-##  graphics  * 3.5.0   2018-04-24 local         
-##  grDevices * 3.5.0   2018-04-24 local         
-##  hms         0.4.2   2018-03-10 CRAN (R 3.5.0)
-##  htmltools   0.3.6   2017-04-28 CRAN (R 3.5.0)
-##  ISLR        1.2     2017-10-20 CRAN (R 3.5.0)
-##  knitr       1.20    2018-02-20 CRAN (R 3.5.0)
-##  magrittr    1.5     2014-11-22 CRAN (R 3.5.0)
-##  memoise     1.1.0   2017-04-21 CRAN (R 3.5.0)
-##  methods   * 3.5.0   2018-04-24 local         
-##  pillar      1.2.3   2018-05-25 CRAN (R 3.5.0)
-##  pkgconfig   2.0.1   2017-03-21 CRAN (R 3.5.0)
-##  R6          2.2.2   2017-06-17 CRAN (R 3.5.0)
-##  Rcpp        0.12.17 2018-05-18 CRAN (R 3.5.0)
-##  readr     * 1.1.1   2017-05-16 CRAN (R 3.5.0)
-##  rlang       0.2.1   2018-05-30 CRAN (R 3.5.0)
-##  rmarkdown   1.9     2018-03-01 CRAN (R 3.5.0)
-##  rprojroot   1.3-2   2018-01-03 CRAN (R 3.5.0)
-##  stats     * 3.5.0   2018-04-24 local         
-##  stringi     1.2.2   2018-05-02 CRAN (R 3.5.0)
-##  stringr     1.3.1   2018-05-10 CRAN (R 3.5.0)
-##  tibble      1.4.2   2018-01-22 CRAN (R 3.5.0)
-##  tools       3.5.0   2018-04-24 local         
-##  utils     * 3.5.0   2018-04-24 local         
-##  withr       2.1.2   2018-03-15 CRAN (R 3.5.0)
-##  xfun        0.1     2018-01-22 CRAN (R 3.5.0)
-##  yaml        2.1.19  2018-05-01 CRAN (R 3.5.0)
+##  package      * version date       source        
+##  assertthat     0.2.0   2017-04-11 CRAN (R 3.5.0)
+##  backports      1.1.2   2017-12-13 CRAN (R 3.5.0)
+##  base         * 3.5.0   2018-04-24 local         
+##  bindr          0.1.1   2018-03-13 CRAN (R 3.5.0)
+##  bindrcpp     * 0.2.2   2018-03-29 CRAN (R 3.5.0)
+##  bookdown       0.7     2018-02-18 CRAN (R 3.5.0)
+##  broom          0.4.4   2018-03-29 CRAN (R 3.5.0)
+##  cellranger     1.1.0   2016-07-27 CRAN (R 3.5.0)
+##  cli            1.0.0   2017-11-05 CRAN (R 3.5.0)
+##  codetools      0.2-15  2016-10-05 CRAN (R 3.5.0)
+##  colorspace     1.3-2   2016-12-14 CRAN (R 3.5.0)
+##  compiler       3.5.0   2018-04-24 local         
+##  crayon         1.3.4   2017-09-16 CRAN (R 3.5.0)
+##  datasets     * 3.5.0   2018-04-24 local         
+##  devtools       1.13.5  2018-02-18 CRAN (R 3.5.0)
+##  digest         0.6.15  2018-01-28 CRAN (R 3.5.0)
+##  dplyr        * 0.7.6   2018-06-29 cran (@0.7.6) 
+##  evaluate       0.10.1  2017-06-24 CRAN (R 3.5.0)
+##  forcats      * 0.3.0   2018-02-19 CRAN (R 3.5.0)
+##  foreign        0.8-70  2017-11-28 CRAN (R 3.5.0)
+##  GGally       * 1.4.0   2018-05-17 CRAN (R 3.5.0)
+##  ggplot2      * 3.0.0   2018-07-03 CRAN (R 3.5.0)
+##  glue           1.2.0   2017-10-29 CRAN (R 3.5.0)
+##  graphics     * 3.5.0   2018-04-24 local         
+##  grDevices    * 3.5.0   2018-04-24 local         
+##  grid           3.5.0   2018-04-24 local         
+##  gtable         0.2.0   2016-02-26 CRAN (R 3.5.0)
+##  haven          1.1.1   2018-01-18 CRAN (R 3.5.0)
+##  hms            0.4.2   2018-03-10 CRAN (R 3.5.0)
+##  htmltools      0.3.6   2017-04-28 CRAN (R 3.5.0)
+##  httr           1.3.1   2017-08-20 CRAN (R 3.5.0)
+##  ISLR           1.2     2017-10-20 CRAN (R 3.5.0)
+##  jsonlite       1.5     2017-06-01 CRAN (R 3.5.0)
+##  knitr          1.20    2018-02-20 CRAN (R 3.5.0)
+##  labeling       0.3     2014-08-23 CRAN (R 3.5.0)
+##  lattice        0.20-35 2017-03-25 CRAN (R 3.5.0)
+##  lazyeval       0.2.1   2017-10-29 CRAN (R 3.5.0)
+##  lubridate      1.7.4   2018-04-11 CRAN (R 3.5.0)
+##  magrittr       1.5     2014-11-22 CRAN (R 3.5.0)
+##  memoise        1.1.0   2017-04-21 CRAN (R 3.5.0)
+##  methods      * 3.5.0   2018-04-24 local         
+##  mnormt         1.5-5   2016-10-15 CRAN (R 3.5.0)
+##  modelr         0.1.2   2018-05-11 CRAN (R 3.5.0)
+##  munsell        0.4.3   2016-02-13 CRAN (R 3.5.0)
+##  nlme           3.1-137 2018-04-07 CRAN (R 3.5.0)
+##  parallel       3.5.0   2018-04-24 local         
+##  pillar         1.2.3   2018-05-25 CRAN (R 3.5.0)
+##  pkgconfig      2.0.1   2017-03-21 CRAN (R 3.5.0)
+##  plyr           1.8.4   2016-06-08 CRAN (R 3.5.0)
+##  psych          1.8.4   2018-05-06 CRAN (R 3.5.0)
+##  purrr        * 0.2.5   2018-05-29 CRAN (R 3.5.0)
+##  R6             2.2.2   2017-06-17 CRAN (R 3.5.0)
+##  RColorBrewer   1.1-2   2014-12-07 CRAN (R 3.5.0)
+##  Rcpp           0.12.17 2018-05-18 CRAN (R 3.5.0)
+##  readr        * 1.1.1   2017-05-16 CRAN (R 3.5.0)
+##  readxl         1.1.0   2018-04-20 CRAN (R 3.5.0)
+##  reshape        0.8.7   2017-08-06 CRAN (R 3.5.0)
+##  reshape2       1.4.3   2017-12-11 CRAN (R 3.5.0)
+##  rlang          0.2.1   2018-05-30 CRAN (R 3.5.0)
+##  rmarkdown      1.9     2018-03-01 CRAN (R 3.5.0)
+##  rprojroot      1.3-2   2018-01-03 CRAN (R 3.5.0)
+##  rstudioapi     0.7     2017-09-07 CRAN (R 3.5.0)
+##  rvest          0.3.2   2016-06-17 CRAN (R 3.5.0)
+##  scales         0.5.0   2017-08-24 CRAN (R 3.5.0)
+##  stats        * 3.5.0   2018-04-24 local         
+##  stringi        1.2.2   2018-05-02 CRAN (R 3.5.0)
+##  stringr      * 1.3.1   2018-05-10 CRAN (R 3.5.0)
+##  tibble       * 1.4.2   2018-01-22 CRAN (R 3.5.0)
+##  tidyr        * 0.8.1   2018-05-18 CRAN (R 3.5.0)
+##  tidyselect     0.2.4   2018-02-26 CRAN (R 3.5.0)
+##  tidyverse    * 1.2.1   2017-11-14 CRAN (R 3.5.0)
+##  tools          3.5.0   2018-04-24 local         
+##  utf8           1.1.4   2018-05-24 CRAN (R 3.5.0)
+##  utils        * 3.5.0   2018-04-24 local         
+##  withr          2.1.2   2018-03-15 CRAN (R 3.5.0)
+##  xfun           0.1     2018-01-22 CRAN (R 3.5.0)
+##  xml2           1.2.0   2018-01-24 CRAN (R 3.5.0)
+##  yaml           2.1.19  2018-05-01 CRAN (R 3.5.0)
 ```

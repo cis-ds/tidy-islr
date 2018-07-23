@@ -91,14 +91,14 @@ scatter_data <- tibble(
 library(ggplot2)    # load ggplot2
 
 # generate scatterplot
-ggplot(data = scatter_data, aes(x = x, y = y)) +
+ggplot(data = scatter_data, mapping = aes(x = x, y = y)) +
   geom_point()
 ```
 
 `ggplot2` builds graphs in layers, so additional components are added using the `+` notation. To add labels to this graph, use the `labs()` function.
 
 ```{r scatterplot-labels}
-ggplot(data = scatter_data, aes(x = x, y = y)) +
+ggplot(data = scatter_data, mapping = aes(x = x, y = y)) +
   geom_point() +
   labs(title = "This is a plot of X vs Y",
        x = "This is the x-axis",
@@ -108,7 +108,7 @@ ggplot(data = scatter_data, aes(x = x, y = y)) +
 To export `ggplot()` objects, use `ggsave()`:
 
 ```r
-x <- ggplot(data = scatter_data, aes(x = x, y = y)) +
+x <- ggplot(data = scatter_data, mapping = aes(x = x, y = y)) +
   geom_point() +
   labs(title = "This is a plot of X vs Y",
        x = "This is the x-axis",
@@ -176,7 +176,7 @@ Auto
 Variable names are passed to `ggplot()` using the `aes()` function.
 
 ```{r aes}
-ggplot(data = Auto, aes(x = cylinders, y = mpg)) +
+ggplot(data = Auto, mapping = aes(x = cylinders, y = mpg)) +
   geom_point()
 ```
 
@@ -188,17 +188,17 @@ Auto <- mutate(.data = Auto,
                cylinders = as.factor(cylinders))
 Auto
 
-ggplot(data = Auto, aes(x = cylinders, y = mpg)) +
+ggplot(data = Auto, mapping = aes(x = cylinders, y = mpg)) +
   geom_boxplot()
 ```
 
 The visual appearance of the boxplot can be customized using either additional arguments to `geom_boxplot()` or adding additional components:
 
 ```{r boxplot-custom}
-ggplot(data = Auto, aes(x = cylinders, y = mpg)) +
+ggplot(data = Auto, mapping = aes(x = cylinders, y = mpg)) +
   geom_boxplot(color = "red")
 
-ggplot(data = Auto, aes(x = cylinders, y = mpg)) +
+ggplot(data = Auto, mapping = aes(x = cylinders, y = mpg)) +
   geom_boxplot(color = "red") +
   labs(x = "Number of cylinders",
        y = "MPG")
