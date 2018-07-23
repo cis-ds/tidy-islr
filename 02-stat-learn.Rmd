@@ -221,7 +221,17 @@ select(.data = Auto, -name) %>%
 
 Piped operations are a powerful tool in the tidyverse to write human-readable code that clearly defines each step of a multi-operation chunk of code.
 
+## Install and load tidyverse packages
 
+The easiest method to install and load tidyverse packages is to install `tidyverse`. This package automatically downloads and installs the [complete tidyverse](https://www.tidyverse.org/packages/). When you load the package with `library(tidyverse)`, it will automatically load the core tidyverse and make it available in your current R session. The core tidyverse is a set of packages you are likely to use in everyday data analyses. All other tidyverse packages can be loaded directly using `library()`.
+
+```r
+install.packages("tidyverse")
+```
+
+```{r tidyverse}
+library(tidyverse)
+```
 
 
 ```{r child = '_session-info.Rmd'}
