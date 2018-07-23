@@ -32,8 +32,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="index.html">
-<link rel="next" href="stat-learn.html">
+<link rel="prev" href="stat-learn.html">
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -152,18 +152,97 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="intro" class="section level1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
-<p>No labs included in this chapter.</p>
+<div id="lin-reg" class="section level1">
+<h1><span class="header-section-number">3</span> Linear regression</h1>
+<div id="simple-linear-regression" class="section level2">
+<h2><span class="header-section-number">3.1</span> Simple linear regression</h2>
+</div>
+<div id="multiple-linear-regression" class="section level2">
+<h2><span class="header-section-number">3.2</span> Multiple linear regression</h2>
+</div>
+<div id="other-considerations-in-the-regression-model" class="section level2">
+<h2><span class="header-section-number">3.3</span> Other considerations in the regression model</h2>
+</div>
+<div id="the-marketing-plan" class="section level2">
+<h2><span class="header-section-number">3.4</span> The marketing plan</h2>
+</div>
+<div id="comparison-of-linear-regression-with-k-nearest-neighbors" class="section level2">
+<h2><span class="header-section-number">3.5</span> Comparison of linear regression with <span class="math inline">\(K\)</span>-nearest neighbors</h2>
+</div>
+<div id="lab-linear-regression" class="section level2">
+<h2><span class="header-section-number">3.6</span> Lab: Linear regression</h2>
+<div id="libraries" class="section level3">
+<h3><span class="header-section-number">3.6.1</span> Libraries</h3>
+</div>
+<div id="simple-linear-regression-1" class="section level3">
+<h3><span class="header-section-number">3.6.2</span> Simple linear regression</h3>
+</div>
+<div id="multiple-linear-regression-1" class="section level3">
+<h3><span class="header-section-number">3.6.3</span> Multiple linear regression</h3>
+</div>
+<div id="interaction-terms" class="section level3">
+<h3><span class="header-section-number">3.6.4</span> Interaction terms</h3>
+</div>
+<div id="non-linear-transformations-of-the-predictors" class="section level3">
+<h3><span class="header-section-number">3.6.5</span> Non-linear transformations of the predictors</h3>
+</div>
+<div id="qualitative-predictors" class="section level3">
+<h3><span class="header-section-number">3.6.6</span> Qualitative predictors</h3>
+</div>
+<div id="writing-functions" class="section level3">
+<h3><span class="header-section-number">3.6.7</span> Writing functions</h3>
+</div>
+</div>
+<div id="session-information-1" class="section level2 toc-ignore">
+<h2><span class="header-section-number">3.7</span> Session information</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">session_info</span>()</code></pre></div>
+<pre><code>## Session info -------------------------------------------------------------</code></pre>
+<pre><code>##  setting  value                       
+##  version  R version 3.5.0 (2018-04-23)
+##  system   x86_64, darwin15.6.0        
+##  ui       X11                         
+##  language (EN)                        
+##  collate  en_US.UTF-8                 
+##  tz       America/Chicago             
+##  date     2018-07-23</code></pre>
+<pre><code>## Packages -----------------------------------------------------------------</code></pre>
+<pre><code>##  package   * version date       source        
+##  backports   1.1.2   2017-12-13 CRAN (R 3.5.0)
+##  base      * 3.5.0   2018-04-24 local         
+##  bookdown    0.7     2018-02-18 CRAN (R 3.5.0)
+##  compiler    3.5.0   2018-04-24 local         
+##  datasets  * 3.5.0   2018-04-24 local         
+##  devtools    1.13.5  2018-02-18 CRAN (R 3.5.0)
+##  digest      0.6.15  2018-01-28 CRAN (R 3.5.0)
+##  evaluate    0.10.1  2017-06-24 CRAN (R 3.5.0)
+##  graphics  * 3.5.0   2018-04-24 local         
+##  grDevices * 3.5.0   2018-04-24 local         
+##  htmltools   0.3.6   2017-04-28 CRAN (R 3.5.0)
+##  knitr       1.20    2018-02-20 CRAN (R 3.5.0)
+##  magrittr    1.5     2014-11-22 CRAN (R 3.5.0)
+##  memoise     1.1.0   2017-04-21 CRAN (R 3.5.0)
+##  methods   * 3.5.0   2018-04-24 local         
+##  Rcpp        0.12.17 2018-05-18 CRAN (R 3.5.0)
+##  rmarkdown   1.9     2018-03-01 CRAN (R 3.5.0)
+##  rprojroot   1.3-2   2018-01-03 CRAN (R 3.5.0)
+##  stats     * 3.5.0   2018-04-24 local         
+##  stringi     1.2.2   2018-05-02 CRAN (R 3.5.0)
+##  stringr     1.3.1   2018-05-10 CRAN (R 3.5.0)
+##  tools       3.5.0   2018-04-24 local         
+##  utils     * 3.5.0   2018-04-24 local         
+##  withr       2.1.2   2018-03-15 CRAN (R 3.5.0)
+##  xfun        0.1     2018-01-22 CRAN (R 3.5.0)
+##  yaml        2.1.19  2018-05-01 CRAN (R 3.5.0)</code></pre>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="stat-learn.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="stat-learn.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -193,7 +272,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/uc-cfss/tidy-islr01-intro.Rmd",
+"link": "https://github.com/uc-cfss/tidy-islr03-linear-regression.Rmd",
 "text": "Edit"
 },
 "download": null,

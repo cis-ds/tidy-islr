@@ -1,0 +1,43 @@
+# Linear regression {#lin-reg}
+
+## Simple linear regression
+
+
+## Multiple linear regression
+
+
+## Other considerations in the regression model
+
+
+## The marketing plan
+
+
+## Comparison of linear regression with $K$-nearest neighbors
+
+
+## Lab: Linear regression
+
+
+### Libraries
+
+
+### Simple linear regression
+
+
+### Multiple linear regression
+
+
+### Interaction terms
+
+
+### Non-linear transformations of the predictors
+
+
+### Qualitative predictors
+
+
+### Writing functions
+
+
+```{r child = '_session-info.Rmd'}
+```

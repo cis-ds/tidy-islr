@@ -1,14 +1,14 @@
-# What Is Statistical Learning? {#stat-learn}
+# What is statistical learning? {#stat-learn}
 
-## What Is Statistical Learning?
+## What is statistical learning?
 
 
-## Assessing Model Accuracy
+## Assessing model accuracy
 
 
 ## Lab: Introduction to R
 
-### Basic Commands
+### Basic commands
 
 ```{r create-vector}
 x <- c(1, 3, 2, 5)
@@ -119,7 +119,7 @@ ggsave(filename = "scatterplot.pdf", plot = x)
 
 `ggplot2` is an excellent package for creating static two-dimensional graphs. For interactive or three-dimensional graphs, consider [plot.ly](https://plot.ly/r/) or [`highcharter`](http://jkunst.com/highcharter/).
 
-### Indexing Data
+### Indexing data
 
 Sometimes you want to examine only a portion of a tibble. Beyond the [base R `[` and `[[` subsetting approaches](http://r4ds.had.co.nz/vectors.html#vector-subsetting), `dplyr` provides two core functions for subsetting a data frame. Consider the following tibble:
 
@@ -148,7 +148,7 @@ select(.data = df, x, y)
 select(.data = df, -y)
 ```
 
-### Loading Data
+### Loading data
 
 To import rectangular data files like `.csv` or `.tsv`, use `read_csv()` or `read_tsv()` from the [`readr`](https://readr.tidyverse.org/) package:
 
@@ -171,7 +171,7 @@ Auto
 * [`readxl`](https://readxl.tidyverse.org/) - Excel
 * [`googledrive`](https://googledrive.tidyverse.org/) - Google Sheets
 
-### Additional Graphical and Numerical Summaries
+### Additional graphical and numerical summaries
 
 Variable names are passed to `ggplot()` using the `aes()` function.
 
