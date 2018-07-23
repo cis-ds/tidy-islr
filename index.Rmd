@@ -1,0 +1,29 @@
+--- 
+title: "An Introduction to Statistical Learning"
+subtitle: "with (Tidy) Applications in R"
+author: "Benjamin Soltoff"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+description: "This is a minimally documented implementation of *An Introduction to Statistical Learning* using a `tidyverse` philosophy for all the applications in R."
+---
+
+# What this is about
+
+* Reimplement [*An Introduction to Statistical Learning*](http://www-bcf.usc.edu/~gareth/ISL/) (@james2013) using primarily [`tidyverse`](https://www.tidyverse.org/) packages and design philosophy.
+
+```{r bib-package, include = FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
+
+## Session Info
+
+```{r session-info, cache = FALSE}
+devtools::session_info()
+```

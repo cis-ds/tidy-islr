@@ -1,0 +1,4 @@
+book_filename: "tidy-islr.Rmd"
+delete_merged_file: true
+edit: https://github.com/uc-cfss/tidy-islr%s
+output_dir: "docs"
