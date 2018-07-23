@@ -51,7 +51,11 @@ Most tidyverse functions assume your data is stored in a **data frame**. A data 
 1. Each observation must have its own row
 1. Each value must have its own cell
 
-**Tibbles** are a special type of data frame which work nicely with tidyverse packages and RStudio. To create a tibble, we first need to load the `tibble` package. Packages in R contain additional functions which build new features onto the base R software. Packages are loaded using the `library()` function, at which point all the functions in the library are now directly accessible.
+**Tibbles** are a special type of data frame which work nicely with tidyverse packages and RStudio. To create a tibble, we first need to load the `tibble` package. Packages in R contain additional functions which build new features onto the base R software. Packages are loaded using the `library()` function, at which point all the functions in the library are now directly accessible. Use `install.packages()` if you do not yet have this package installed:
+
+```r
+install.packages("tibble")
+```
 
 ```{r load-tibble}
 library(tibble)
@@ -117,8 +121,102 @@ ggsave(filename = "scatterplot.pdf", plot = x)
 
 ### Indexing Data
 
+Sometimes you want to examine only a portion of a tibble. Beyond the [base R `[` and `[[` subsetting approaches](http://r4ds.had.co.nz/vectors.html#vector-subsetting), `dplyr` provides two core functions for subsetting a data frame. Consider the following tibble:
+
+```{r index-tibble}
+df <- tibble(
+  x = 1:5,
+  y = 1,
+  z = x ^ 2 + y
+)
+df
+```
+
+To subset specific rows, use `filter()`:
+
+```{r filter}
+library(dplyr)
+
+filter(.data = df, x > 3)
+filter(.data = df, z < 5)
+```
+
+To subset specific columns, use `select()`:
+
+```{r select}
+select(.data = df, x, y)
+select(.data = df, -y)
+```
 
 ### Loading Data
 
+To import rectangular data files like `.csv` or `.tsv`, use `read_csv()` or `read_tsv()` from the [`readr`](https://readr.tidyverse.org/) package:
+
+```{r export-csv-tsv, include = FALSE, cache = FALSE}
+library(readr)
+
+write_csv(ISLR::Auto, "data/auto.csv")
+```
+
+```{r import-csv-tsv, dependson = "export-csv-tsv"}
+library(readr)
+
+Auto <- read_csv("data/auto.csv")
+Auto
+```
+
+`read_()` functions automatically decode each column type, a header row (if available), and import the data quickly and efficiently. Generally these guesses for column type are accurate, though they can always be manually defined. To import other file types, consider these packages:
+
+* [`haven`](https://haven.tidyverse.org/) - SAS, SPSS, and Stata
+* [`readxl`](https://readxl.tidyverse.org/) - Excel
+* [`googledrive`](https://googledrive.tidyverse.org/) - Google Sheets
 
 ### Additional Graphical and Numerical Summaries
+
+Variable names are passed to `ggplot()` using the `aes()` function.
+
+```{r aes}
+ggplot(data = Auto, aes(x = cylinders, y = mpg)) +
+  geom_point()
+```
+
+Since `cylinders` is essentially a categorical variable (not enough unique values to be considered continuous), we could store it as a qualitative variable using `as.factor()` and then visualize this data using a **boxplot**. To convert a column in-place, we use `mutate()` from the `dplyr` package:
+
+```{r boxplot}
+# convert cylinders to a factor variable
+Auto <- mutate(.data = Auto,
+               cylinders = as.factor(cylinders))
+Auto
+
+ggplot(data = Auto, aes(x = cylinders, y = mpg)) +
+  geom_boxplot()
+```
+
+The visual appearance of the boxplot can be customized using either additional arguments to `geom_boxplot()` or adding additional components:
+
+```{r boxplot-custom}
+ggplot(data = Auto, aes(x = cylinders, y = mpg)) +
+  geom_boxplot(color = "red")
+
+ggplot(data = Auto, aes(x = cylinders, y = mpg)) +
+  geom_boxplot(color = "red") +
+  labs(x = "Number of cylinders",
+       y = "MPG")
+```
+
+To create a scatterplot matrix, use `ggpairs()` from the [`GGally`](http://ggobi.github.io/ggally/index.html) package:
+
+```{r ggpairs}
+library(GGally)
+
+ggpairs(data = select(.data = Auto, -name))
+```
+
+We need to exclude the `name` column because it is just an ID column - there is nothing informative in this column to create a scatterplot matrix. We could also write this code using the [**pipe operator**](http://r4ds.had.co.nz/pipes.html) `%>%` to first subset the tibble, then create the scatterplot matrix:
+
+```{r ggpairs-pipe}
+select(.data = Auto, -name) %>%
+  ggpairs()
+```
+
+Piped operations are a powerful tool in the tidyverse to write human-readable code that clearly defines each step of a multi-operation chunk of code.

@@ -92,7 +92,11 @@ Most tidyverse functions assume your data is stored in a **data frame**. A data 
 1. Each observation must have its own row
 1. Each value must have its own cell
 
-**Tibbles** are a special type of data frame which work nicely with tidyverse packages and RStudio. To create a tibble, we first need to load the `tibble` package. Packages in R contain additional functions which build new features onto the base R software. Packages are loaded using the `library()` function, at which point all the functions in the library are now directly accessible.
+**Tibbles** are a special type of data frame which work nicely with tidyverse packages and RStudio. To create a tibble, we first need to load the `tibble` package. Packages in R contain additional functions which build new features onto the base R software. Packages are loaded using the `library()` function, at which point all the functions in the library are now directly accessible. Use `install.packages()` if you do not yet have this package installed:
+
+```r
+install.packages("tibble")
+```
 
 
 ```r
@@ -177,8 +181,276 @@ ggsave(filename = "scatterplot.pdf", plot = x)
 
 ### Indexing Data
 
+Sometimes you want to examine only a portion of a tibble. Beyond the [base R `[` and `[[` subsetting approaches](http://r4ds.had.co.nz/vectors.html#vector-subsetting), `dplyr` provides two core functions for subsetting a data frame. Consider the following tibble:
+
+
+```r
+df <- tibble(
+  x = 1:5,
+  y = 1,
+  z = x ^ 2 + y
+)
+df
+```
+
+```
+## # A tibble: 5 x 3
+##       x     y     z
+##   <int> <dbl> <dbl>
+## 1     1     1     2
+## 2     2     1     5
+## 3     3     1    10
+## 4     4     1    17
+## 5     5     1    26
+```
+
+To subset specific rows, use `filter()`:
+
+
+```r
+library(dplyr)
+```
+
+```
+## Warning: package 'dplyr' was built under R version 3.5.1
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
+filter(.data = df, x > 3)
+```
+
+```
+## # A tibble: 2 x 3
+##       x     y     z
+##   <int> <dbl> <dbl>
+## 1     4     1    17
+## 2     5     1    26
+```
+
+```r
+filter(.data = df, z < 5)
+```
+
+```
+## # A tibble: 1 x 3
+##       x     y     z
+##   <int> <dbl> <dbl>
+## 1     1     1     2
+```
+
+To subset specific columns, use `select()`:
+
+
+```r
+select(.data = df, x, y)
+```
+
+```
+## # A tibble: 5 x 2
+##       x     y
+##   <int> <dbl>
+## 1     1     1
+## 2     2     1
+## 3     3     1
+## 4     4     1
+## 5     5     1
+```
+
+```r
+select(.data = df, -y)
+```
+
+```
+## # A tibble: 5 x 2
+##       x     z
+##   <int> <dbl>
+## 1     1     2
+## 2     2     5
+## 3     3    10
+## 4     4    17
+## 5     5    26
+```
 
 ### Loading Data
 
+To import rectangular data files like `.csv` or `.tsv`, use `read_csv()` or `read_tsv()` from the [`readr`](https://readr.tidyverse.org/) package:
+
+
+
+
+```r
+library(readr)
+
+Auto <- read_csv("data/auto.csv")
+```
+
+```
+## Parsed with column specification:
+## cols(
+##   mpg = col_double(),
+##   cylinders = col_integer(),
+##   displacement = col_double(),
+##   horsepower = col_integer(),
+##   weight = col_double(),
+##   acceleration = col_double(),
+##   year = col_integer(),
+##   origin = col_integer(),
+##   name = col_character()
+## )
+```
+
+```r
+Auto
+```
+
+```
+## # A tibble: 392 x 9
+##     mpg cylinders displacement horsepower weight acceleration  year origin
+##   <dbl>     <int>        <dbl>      <int>  <dbl>        <dbl> <int>  <int>
+## 1    18         8          307        130   3504         12      70      1
+## 2    15         8          350        165   3693         11.5    70      1
+## 3    18         8          318        150   3436         11      70      1
+## 4    16         8          304        150   3433         12      70      1
+## 5    17         8          302        140   3449         10.5    70      1
+## 6    15         8          429        198   4341         10      70      1
+## # ... with 386 more rows, and 1 more variable: name <chr>
+```
+
+`read_()` functions automatically decode each column type, a header row (if available), and import the data quickly and efficiently. Generally these guesses for column type are accurate, though they can always be manually defined. To import other file types, consider these packages:
+
+* [`haven`](https://haven.tidyverse.org/) - SAS, SPSS, and Stata
+* [`readxl`](https://readxl.tidyverse.org/) - Excel
+* [`googledrive`](https://googledrive.tidyverse.org/) - Google Sheets
 
 ### Additional Graphical and Numerical Summaries
+
+Variable names are passed to `ggplot()` using the `aes()` function.
+
+
+```r
+ggplot(data = Auto, aes(x = cylinders, y = mpg)) +
+  geom_point()
+```
+
+<img src="02-stat-learn_files/figure-html/aes-1.png" width="70%" style="display: block; margin: auto;" />
+
+Since `cylinders` is essentially a categorical variable (not enough unique values to be considered continuous), we could store it as a qualitative variable using `as.factor()` and then visualize this data using a **boxplot**. To convert a column in-place, we use `mutate()` from the `dplyr` package:
+
+
+```r
+# convert cylinders to a factor variable
+Auto <- mutate(.data = Auto,
+               cylinders = as.factor(cylinders))
+Auto
+```
+
+```
+## # A tibble: 392 x 9
+##     mpg cylinders displacement horsepower weight acceleration  year origin
+##   <dbl> <fct>            <dbl>      <int>  <dbl>        <dbl> <int>  <int>
+## 1    18 8                  307        130   3504         12      70      1
+## 2    15 8                  350        165   3693         11.5    70      1
+## 3    18 8                  318        150   3436         11      70      1
+## 4    16 8                  304        150   3433         12      70      1
+## 5    17 8                  302        140   3449         10.5    70      1
+## 6    15 8                  429        198   4341         10      70      1
+## # ... with 386 more rows, and 1 more variable: name <chr>
+```
+
+```r
+ggplot(data = Auto, aes(x = cylinders, y = mpg)) +
+  geom_boxplot()
+```
+
+<img src="02-stat-learn_files/figure-html/boxplot-1.png" width="70%" style="display: block; margin: auto;" />
+
+The visual appearance of the boxplot can be customized using either additional arguments to `geom_boxplot()` or adding additional components:
+
+
+```r
+ggplot(data = Auto, aes(x = cylinders, y = mpg)) +
+  geom_boxplot(color = "red")
+
+ggplot(data = Auto, aes(x = cylinders, y = mpg)) +
+  geom_boxplot(color = "red") +
+  labs(x = "Number of cylinders",
+       y = "MPG")
+```
+
+<img src="02-stat-learn_files/figure-html/boxplot-custom-1.png" width="70%" style="display: block; margin: auto;" /><img src="02-stat-learn_files/figure-html/boxplot-custom-2.png" width="70%" style="display: block; margin: auto;" />
+
+To create a scatterplot matrix, use `ggpairs()` from the [`GGally`](http://ggobi.github.io/ggally/index.html) package:
+
+
+```r
+library(GGally)
+```
+
+```
+## 
+## Attaching package: 'GGally'
+```
+
+```
+## The following object is masked from 'package:dplyr':
+## 
+##     nasa
+```
+
+```r
+ggpairs(data = select(.data = Auto, -name))
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+<img src="02-stat-learn_files/figure-html/ggpairs-1.png" width="70%" style="display: block; margin: auto;" />
+
+We need to exclude the `name` column because it is just an ID column - there is nothing informative in this column to create a scatterplot matrix. We could also write this code using the [**pipe operator**](http://r4ds.had.co.nz/pipes.html) `%>%` to first subset the tibble, then create the scatterplot matrix:
+
+
+```r
+select(.data = Auto, -name) %>%
+  ggpairs()
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+<img src="02-stat-learn_files/figure-html/ggpairs-pipe-1.png" width="70%" style="display: block; margin: auto;" />
+
+Piped operations are a powerful tool in the tidyverse to write human-readable code that clearly defines each step of a multi-operation chunk of code.
