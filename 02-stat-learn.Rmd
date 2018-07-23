@@ -152,13 +152,13 @@ select(.data = df, -y)
 
 To import rectangular data files like `.csv` or `.tsv`, use `read_csv()` or `read_tsv()` from the [`readr`](https://readr.tidyverse.org/) package:
 
-```{r export-csv-tsv, include = FALSE, cache = FALSE}
+```{r export-csv, include = FALSE}
 library(readr)
 
 write_csv(ISLR::Auto, "data/auto.csv")
 ```
 
-```{r import-csv-tsv, dependson = "export-csv-tsv"}
+```{r import-csv, dependson = "export-csv"}
 library(readr)
 
 Auto <- read_csv("data/auto.csv")
