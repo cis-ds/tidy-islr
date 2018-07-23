@@ -5,17 +5,12 @@ author: "Benjamin Soltoff"
 date: "2018-07-23"
 site: bookdown::bookdown_site
 documentclass: book
-bibliography: [book.bib, packages.bib]
-biblio-style: apalike
-link-citations: true
 description: "This is a minimally documented implementation of *An Introduction to Statistical Learning* using a `tidyverse` philosophy for all the applications in R."
 ---
 
 # What this is about {-}
 
-* Reimplement [*An Introduction to Statistical Learning*](http://www-bcf.usc.edu/~gareth/ISL/) (@james2013) using primarily [`tidyverse`](https://www.tidyverse.org/) packages and design philosophy.
-
-
+* Reimplement [*An Introduction to Statistical Learning*](http://www-bcf.usc.edu/~gareth/ISL/) using primarily [`tidyverse`](https://www.tidyverse.org/) packages and design philosophy.
 
 The original *ISLR* book is copyrighted by Springer. The original contribution in work is licensed under the [CC BY-NC 4.0 Creative Commons License](http://creativecommons.org/licenses/by-nc/4.0/).
 
