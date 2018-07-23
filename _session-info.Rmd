@@ -1,0 +1,5 @@
+## Session information {.toc-ignore}
+
+```{r cache = FALSE}
+devtools::session_info()
+```

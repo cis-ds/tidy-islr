@@ -103,9 +103,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="./">(Tidy) ISLR</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>What this is about</a><ul>
-<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#session-info"><i class="fa fa-check"></i><b>0.1</b> Session Info</a></li>
-</ul></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>What this is about</a></li>
 <li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
 <li class="chapter" data-level="2" data-path="stat-learn.html"><a href="stat-learn.html"><i class="fa fa-check"></i><b>2</b> What Is Statistical Learning?</a><ul>
 <li class="chapter" data-level="2.1" data-path="stat-learn.html"><a href="stat-learn.html#what-is-statistical-learning"><i class="fa fa-check"></i><b>2.1</b> What Is Statistical Learning?</a></li>
@@ -117,6 +115,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="2.3.4" data-path="stat-learn.html"><a href="stat-learn.html#loading-data"><i class="fa fa-check"></i><b>2.3.4</b> Loading Data</a></li>
 <li class="chapter" data-level="2.3.5" data-path="stat-learn.html"><a href="stat-learn.html#additional-graphical-and-numerical-summaries"><i class="fa fa-check"></i><b>2.3.5</b> Additional Graphical and Numerical Summaries</a></li>
 </ul></li>
+<li class="chapter" data-level="2.4" data-path="stat-learn.html"><a href="stat-learn.html#session-information"><i class="fa fa-check"></i><b>2.4</b> Session information</a></li>
 </ul></li>
 </ul>
 
@@ -390,8 +389,57 @@ Auto</code></pre></div>
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 <p><img src="02-stat-learn_files/figure-html/ggpairs-pipe-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>Piped operations are a powerful tool in the tidyverse to write human-readable code that clearly defines each step of a multi-operation chunk of code.</p>
-
 </div>
+</div>
+<div id="session-information" class="section level2 toc-ignore">
+<h2><span class="header-section-number">2.4</span> Session information</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">session_info</span>()</code></pre></div>
+<pre><code>## Session info -------------------------------------------------------------</code></pre>
+<pre><code>##  setting  value                       
+##  version  R version 3.5.0 (2018-04-23)
+##  system   x86_64, darwin15.6.0        
+##  ui       X11                         
+##  language (EN)                        
+##  collate  en_US.UTF-8                 
+##  tz       America/Chicago             
+##  date     2018-07-23</code></pre>
+<pre><code>## Packages -----------------------------------------------------------------</code></pre>
+<pre><code>##  package   * version date       source        
+##  backports   1.1.2   2017-12-13 CRAN (R 3.5.0)
+##  base      * 3.5.0   2018-04-24 local         
+##  bookdown    0.7     2018-02-18 CRAN (R 3.5.0)
+##  compiler    3.5.0   2018-04-24 local         
+##  datasets  * 3.5.0   2018-04-24 local         
+##  devtools    1.13.5  2018-02-18 CRAN (R 3.5.0)
+##  digest      0.6.15  2018-01-28 CRAN (R 3.5.0)
+##  evaluate    0.10.1  2017-06-24 CRAN (R 3.5.0)
+##  graphics  * 3.5.0   2018-04-24 local         
+##  grDevices * 3.5.0   2018-04-24 local         
+##  hms         0.4.2   2018-03-10 CRAN (R 3.5.0)
+##  htmltools   0.3.6   2017-04-28 CRAN (R 3.5.0)
+##  ISLR        1.2     2017-10-20 CRAN (R 3.5.0)
+##  knitr       1.20    2018-02-20 CRAN (R 3.5.0)
+##  magrittr    1.5     2014-11-22 CRAN (R 3.5.0)
+##  memoise     1.1.0   2017-04-21 CRAN (R 3.5.0)
+##  methods   * 3.5.0   2018-04-24 local         
+##  pillar      1.2.3   2018-05-25 CRAN (R 3.5.0)
+##  pkgconfig   2.0.1   2017-03-21 CRAN (R 3.5.0)
+##  R6          2.2.2   2017-06-17 CRAN (R 3.5.0)
+##  Rcpp        0.12.17 2018-05-18 CRAN (R 3.5.0)
+##  readr     * 1.1.1   2017-05-16 CRAN (R 3.5.0)
+##  rlang       0.2.1   2018-05-30 CRAN (R 3.5.0)
+##  rmarkdown   1.9     2018-03-01 CRAN (R 3.5.0)
+##  rprojroot   1.3-2   2018-01-03 CRAN (R 3.5.0)
+##  stats     * 3.5.0   2018-04-24 local         
+##  stringi     1.2.2   2018-05-02 CRAN (R 3.5.0)
+##  stringr     1.3.1   2018-05-10 CRAN (R 3.5.0)
+##  tibble      1.4.2   2018-01-22 CRAN (R 3.5.0)
+##  tools       3.5.0   2018-04-24 local         
+##  utils     * 3.5.0   2018-04-24 local         
+##  withr       2.1.2   2018-03-15 CRAN (R 3.5.0)
+##  xfun        0.1     2018-01-22 CRAN (R 3.5.0)
+##  yaml        2.1.19  2018-05-01 CRAN (R 3.5.0)</code></pre>
+
 </div>
 </div>
             </section>
