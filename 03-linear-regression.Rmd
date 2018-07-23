@@ -1,5 +1,9 @@
 # Linear regression {#lin-reg}
 
+```{r packages}
+library(tidyverse)
+```
+
 ## Simple linear regression
 
 
@@ -20,21 +24,146 @@
 
 ### Libraries
 
+`ISLR` contains several datasets associated with **An Introduction to Statistical Learning**. `MASS` also contains a large number of data sets and functions, one of which is used in this lab. However `MASS` also contains a function called `filter()`, which would conflict with `filter()` from `dplyr`. To avoid this conflict, we can use `data()` to directly access the data frame without loading the entire `MASS` package. We then convert this data frame to a tibble using `as_tibble()` to ensure proper formatting and appearance.
+
+```{r libraries}
+library(ISLR)
+data(Boston, package = "MASS")
+
+Boston <- as_tibble(Boston)
+Boston
+```
 
 ### Simple linear regression
 
+`Boston` is a dataset of neighborhood statistics for `r nrow(Boston)` neighborhoods around Boston, Massachusetts. We will attempt to predict `medv` (median value of owner-occupied homes in \$1000s) using 13 predictors such as `rm` (average number of rooms per house), `age` (average age of houses), and `lstat` (percent of households with low socioeconomic status). To estimate a linear regression model in R, use the core `lm()` function. The syntax is `lm(response ~ predictors, data = dataframe)`, like this:
+
+```{r lm-basic}
+lm_fit <- lm(medv ~ lstat, data = Boston)
+```
+
+To view a summary of the linear regression model, the base R approach uses `summary()`:
+
+```{r lm-summary}
+summary(lm_fit)
+```
+
+This prints some output to the console, including information about the coefficients, standard errors, and overall model statistics. This approach is not tidy because the object containing all this information is not a data frame. Instead, we can use the [`broom` package](https://broom.tidyverse.org/) to summarize and extract key information about statistical models in tidy `tibble`s. To view summaries about each component of the model (in this case, the regression coefficients), use `tidy()`:
+
+```{r lm-tidy}
+library(broom)
+
+tidy(lm_fit)
+```
+
+`glance()` returns a tibble with one row of goodness of fit measures and related statistics.
+
+```{r lm-glance}
+glance(lm_fit)
+```
+
+`augment()` returns a data frame with one row per observation from the original dataset and adds information such as fitted values, residuals, etc.
+
+```{r lm-augment}
+augment(lm_fit) %>%
+  as_tibble()
+```
+
+To visualize the linear regression model, we can use `geom_smooth()`:
+
+```{r lm-viz}
+ggplot(data = Boston, aes(x = lstat, y = medv)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+This not only draws the best fit line but also generates a 95% confidence interval.
+
+Visualizing diagnostic plots can also be done using `augment()` and `ggplot()`. `augment()` automatically calculates statistics such as residuals and leverage statistics.
+
+```{r lm-augment-viz}
+augment(lm_fit) %>%
+  ggplot(aes(x = .fitted, y = .resid)) +
+  geom_point() +
+  labs(x = "Fitted value",
+       y = "Residual")
+
+augment(lm_fit) %>%
+  ggplot(aes(x = .fitted, y = .std.resid)) +
+  geom_point() +
+  labs(x = "Fitted value",
+       y = "Standardized residual")
+
+augment(lm_fit) %>%
+  ggplot(aes(x = .hat)) +
+  geom_histogram() +
+  labs(x = "Hat value")
+```
 
 ### Multiple linear regression
 
+Again we use `lm()`, now specifying multiple predictors using `x1 + x2 + x3` notation.
+
+```{r lm-mult}
+lm_fit <- lm(medv ~ lstat + age, data = Boston)
+tidy(lm_fit)
+glance(lm_fit)
+```
+
+To automatically regress on all of the available predictors:
+
+```{r lm-all}
+lm_fit <- lm(medv ~ ., data = Boston)
+tidy(lm_fit)
+glance(lm_fit)
+```
+
+Use `vif()` from the `car` package to calculate variance inflation factors (VIFs).
+
+```{r vif}
+library(car)
+vif(lm_fit)
+```
 
 ### Interaction terms
 
+Use the syntax `lstat * age` to simultaneously include `lstat`, `age,` and the interaction term `lstat x age`. [Never omit constitutive terms.](https://doi.org/10.1093/pan/mpi014)
+
+```{r x-terms}
+lm(medv ~ lstat * age, data = Boston) %>%
+  tidy()
+```
 
 ### Non-linear transformations of the predictors
 
+Add non-linear transformations of predictors using `I(x ^ 2)` notation. So to add a second-order polynomial term:
+
+```{r x2}
+lm_fit2 <- lm(medv ~ lstat + I(lstat ^ 2), data = Boston)
+tidy(lm_fit2)
+```
+
+Third and higher order terms are best implemented using `poly()`, which allows you to specify the highest-order term and all lower-order terms are automatically created.
+
+```{r x5}
+lm_fit5 <- lm(medv ~ poly(x = lstat, degree = 5), data = Boston)
+tidy(lm_fit5)
+```
 
 ### Qualitative predictors
 
+Examine the `CarSeats` data in the `ISLR` library.
+
+```{r carseats}
+as_tibble(Carseats)
+```
+
+While some of the variables are continuous, others such as `ShelveLoc` (quality of shelf location) are qualitative. `ShelveLoc` takes on three possible values: *Bad*, *Medium*, and *Good*. Given qualitative variables, R automatically converts them to a series of dummy variables with `0/1` coding:
+
+```{r lm-qual}
+lm_fit <- lm(Sales ~ . + Income:Advertising + Price:Age, data = Carseats)
+tidy(lm_fit)
+```
 
 ### Writing functions
 
