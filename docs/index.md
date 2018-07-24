@@ -3,7 +3,7 @@
 title: "An Introduction to Statistical Learning"
 subtitle: "with (Tidy) Applications in R"
 author: "Benjamin Soltoff"
-date: "2018-07-23"
+date: "2018-07-24"
 site: bookdown::bookdown_site
 documentclass: book
 description: "This is a minimally documented implementation of *An Introduction to Statistical Learning* using a `tidyverse` philosophy for all the applications in R."

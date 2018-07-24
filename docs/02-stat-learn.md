@@ -504,7 +504,7 @@ devtools::session_info()
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2018-07-23
+##  date     2018-07-24
 ```
 
 ```

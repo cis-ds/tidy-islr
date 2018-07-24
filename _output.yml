@@ -6,3 +6,5 @@ bookdown::gitbook:
         <li><a href="./">(Tidy) ISLR</a></li>
     theme: readable
     highlight: pygments
+  includes:
+    in_header: [google_analytics.html]
